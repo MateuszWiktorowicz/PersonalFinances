@@ -1,0 +1,13 @@
+.navbar-toggler {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #navMainPageButtons .btn {
+        display: none;
+    }
+
+    .navbar-toggler {
+        display: block;
+    }
+}

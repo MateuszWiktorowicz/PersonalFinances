@@ -21,7 +21,7 @@
             
             <div class="d-flex gap-5 p-3" id="navMainPageButtons">
                 <div><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginLabel">Sign In</button></div>
-                <div><button class="btn btn-info text-light">Sign Up</button></div>
+                <div><button class="btn btn-info text-light" data-bs-toggle="modal" data-bs-target="#registerLabel">Sign Up</button></div>
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,7 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
                 <div class="navbar-nav">
                     <div><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginLabel">Sign In</button></div>
-                    <a class="nav-link" href="#">Sign Up</a>
+                    <div><button class="btn btn-info text-light" data-bs-toggle="modal" data-bs-target="#registerLabel">Sign Up</button></div>
                 </div>
             </div>
         </div>
@@ -52,10 +52,11 @@
                 </div>
                 <div class="d-flex flex-column align-items-center gap-3">
                     <div>Don't you have account yet? Don't worry!</div>
-                    <div><button class="btn btn-info text-light">Sign Up</button></div>
+                    <div><button class="btn btn-info text-light" data-bs-toggle="modal" data-bs-target="#registerLabel">Sign Up</button></div>
                 </div>
             </div>
         </div>
+
         <div class="modal fade" id="loginLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -78,6 +79,41 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary" id="loginSubmit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="registerLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Sign Up Form</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="registerInputName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="registerInputName">
+                          </div>
+                        <div class="mb-3">
+                          <label for="registerInputEmail" class="form-label">Email address</label>
+                          <input type="email" class="form-control" id="registerInputEmail">
+                        </div>
+                        <div class="mb-3">
+                          <label for="registerInputPassword" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="registerInputPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmRegisterInputPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmRegisterInputPassword">
+                          </div>
+                      </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="registerSubmit">Submit</button>
                 </div>
               </div>
             </div>

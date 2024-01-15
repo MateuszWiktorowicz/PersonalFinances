@@ -20,7 +20,7 @@
             </a>
             
             <div class="d-flex gap-5 p-3" id="navMainPageButtons">
-                <div><button class="btn btn-success">Sign In</button></div>
+                <div><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginLabel">Sign In</button></div>
                 <div><button class="btn btn-info text-light">Sign Up</button></div>
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +28,7 @@
             </div>
             <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
                 <div class="navbar-nav">
-                    <a class="nav-link" href="#">Sign In</a>
+                    <div><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginLabel">Sign In</button></div>
                     <a class="nav-link" href="#">Sign Up</a>
                 </div>
             </div>
@@ -48,7 +48,7 @@
             <div class="d-flex flex-column flex-md-row bg-white opacity-75 rounded justify-content-between my-5 align-items-center gap-5 m-5 p-5">
                 <div class="d-flex flex-column align-items-center gap-3">
                     <div>Have You account already?</div>
-                    <div><button class="btn btn-success">Sign In</button></div>
+                    <div><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginLabel">Sign In</button></div>
                 </div>
                 <div class="d-flex flex-column align-items-center gap-3">
                     <div>Don't you have account yet? Don't worry!</div>
@@ -56,6 +56,32 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="loginLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Sign In Form</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                          <label for="loginInputEmail" class="form-label">Email address</label>
+                          <input type="email" class="form-control" id="loginInputEmail">
+                        </div>
+                        <div class="mb-3">
+                          <label for="loginInputPassword" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="loginInputPassword">
+                        </div>
+                      </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="loginSubmit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </main>
     <footer class="text-center bg-white">
         <div class="container">github.com/MateuszWiktorowicz</div>

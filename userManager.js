@@ -23,6 +23,8 @@ function insertNewUser() {
         var user = new User(userId, name, email, password);
         users.push(user);
 
+        localStorage.setItem("users", JSON.stringify(users));
+
         showRegistrationSuccessComunicate()
     }
 }
@@ -78,16 +80,26 @@ function login() {
     for (var i = 0; i < users.length; i++) {
         if (email === users[i].email && password === users[i].password) {
             window.location.href = "www.google.com";
+        } else if (users.length === 0) {
+            showLoginFailAttempt();
         } else {
             showLoginFailAttempt();
         }
     }
+}
 
-    if (users.length === 0) {showLoginFailAttempt();}
+function loadUsers() {
+    var storedUsers = localStorage.getItem("users");
 
+    if (storedUsers) {
+        users = JSON.parse(storedUsers);
+    } else {
+        console.log("No users data found");
+    }
 }
 
 
+loadUsers();
 
 $("#registerForm").submit(function(event) {
     event.preventDefault();

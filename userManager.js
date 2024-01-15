@@ -6,7 +6,6 @@ function User(userId, name, email, password) {
 }
 
 var users = [];
-var idLoggedInUser = 0;
 
 function register() {
     insertNewUser();
@@ -22,6 +21,8 @@ function insertNewUser() {
     if (!checkIsUserExist(email) && checkArePasswordTheSame(password, confirmPassword)) {
         var user = new User(userId, name, email, password);
         users.push(user);
+
+        localStorage.setItem("users", JSON.stringify(users));
 
         showRegistrationSuccessComunicate()
     }
@@ -74,20 +75,30 @@ function showLoginFailAttempt() {
 function login() {
     var email = $("#loginInputEmail").val();
     var password = $("#loginInputPassword").val();
+    var loggedIn = false;
 
     for (var i = 0; i < users.length; i++) {
         if (email === users[i].email && password === users[i].password) {
-            window.location.href = "www.google.com";
-        } else {
-            showLoginFailAttempt();
-        }
+            localStorage.setItem("idLoggedInUser", JSON.stringify(users[i].userId));
+            loggedIn = true;
+           // window.location.href = "www.google.com";
+    }}
+    
+    if (!loggedIn) {showLoginFailAttempt()};
+}
+
+function loadUsers() {
+    var storedUsers = localStorage.getItem("users");
+
+    if (storedUsers) {
+        users = JSON.parse(storedUsers);
+    } else {
+        console.log("No users data found");
     }
-
-    if (users.length === 0) {showLoginFailAttempt();}
-
 }
 
 
+loadUsers();
 
 $("#registerForm").submit(function(event) {
     event.preventDefault();

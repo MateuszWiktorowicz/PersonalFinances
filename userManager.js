@@ -6,7 +6,6 @@ function User(userId, name, email, password) {
 }
 
 var users = [];
-var idLoggedInUser = 0;
 
 function register() {
     insertNewUser();
@@ -76,16 +75,16 @@ function showLoginFailAttempt() {
 function login() {
     var email = $("#loginInputEmail").val();
     var password = $("#loginInputPassword").val();
+    var loggedIn = false;
 
     for (var i = 0; i < users.length; i++) {
         if (email === users[i].email && password === users[i].password) {
-            window.location.href = "www.google.com";
-        } else if (users.length === 0) {
-            showLoginFailAttempt();
-        } else {
-            showLoginFailAttempt();
-        }
-    }
+            localStorage.setItem("idLoggedInUser", JSON.stringify(users[i].userId));
+            loggedIn = true;
+           // window.location.href = "www.google.com";
+    }}
+    
+    if (!loggedIn) {showLoginFailAttempt()};
 }
 
 function loadUsers() {

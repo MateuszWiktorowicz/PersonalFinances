@@ -81,7 +81,7 @@ function login() {
         if (email === users[i].email && password === users[i].password) {
             localStorage.setItem("idLoggedInUser", JSON.stringify(users[i].userId));
             loggedIn = true;
-           // window.location.href = "www.google.com";
+            window.location.href = "./mainMenu.html";
     }}
     
     if (!loggedIn) {showLoginFailAttempt()};

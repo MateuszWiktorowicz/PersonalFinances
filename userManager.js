@@ -10,7 +10,6 @@ var idLoggedInUser = 0;
 
 function register() {
     insertNewUser();
-
 }
 
 function insertNewUser() {
@@ -62,7 +61,44 @@ function showRegistrationSuccessComunicate() {
     }, 1500);
 }
 
+function showLoginFailAttempt() {
+    $("#loginLabel .modal-footer").after("<div class='text-center text-danger mb-3' id='loginFailInfo'> Login fail! </div>")
+        
+    setTimeout(function() {
+        $("#loginFailInfo").fadeOut('slow', function() {
+            $(this).remove();
+        });
+    }, 1500);
+}
+
+function login() {
+    var email = $("#loginInputEmail").val();
+    var password = $("#loginInputPassword").val();
+
+    for (var i = 0; i < users.length; i++) {
+        if (email === users[i].email && password === users[i].password) {
+            window.location.href = "www.google.com";
+        } else {
+            showLoginFailAttempt();
+        }
+    }
+
+    if (users.length === 0) {showLoginFailAttempt();}
+
+}
+
+
+
 $("#registerForm").submit(function(event) {
     event.preventDefault();
     register();
+
+    $(this)[0].reset();
 });
+
+$("#loginForm").submit(function(event) {
+    event.preventDefault();
+    login();
+
+    $(this)[0].reset();
+})

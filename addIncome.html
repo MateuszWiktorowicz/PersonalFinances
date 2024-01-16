@@ -51,15 +51,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="incomeDate" class="form-label">Income date:</label>
-                    <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" id="incomeDate">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                    </div>
+                    <input type="text" class="datepicker form-control" id="incomeDate"/>
                 </div>
                 <div class="mb-3">
-                    <select class="form-select" aria-label="Income Category:">
+                    <label for="incomeCategory" class="form-label">Income category:</label>
+                    <select class="form-select" aria-label="Income Category:" id="incomeCategory">
                         <option selected>Select income category:</option>
                         <option value="Salary">Salary</option>
                         <option value="Bank interest">Bank interest</option>
@@ -81,9 +77,8 @@
         <div class="container">github.com/MateuszWiktorowicz</div>
     </footer>
     
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="./userManager.js"></script>
     <script src="./accountManager.js"></script>
     <script src="./dataPicker/js/bootstrap-datepicker.min.js"></script>

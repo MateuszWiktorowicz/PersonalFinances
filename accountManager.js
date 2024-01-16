@@ -10,9 +10,13 @@ function welcomeLoggedInUser() {
     }
 } 
 
-$('.datepicker').datepicker({
-    format: 'mm/dd/yyyy',
-    startDate: '-3d'
+$(function () { 
+    $(".datepicker").datepicker({  
+        format: 'mm/dd/yyyy',
+        startDate: '-3d',
+        autoclose: true,
+    });
+    $(".datepicker").datepicker('setDate', new Date());
 });
 
 welcomeLoggedInUser();

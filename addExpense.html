@@ -43,32 +43,62 @@
     </nav>
     <main>
         <div class="d-flex flex-column m-5 p-5 bg-white opacity-100 rounded">
-            <form class="m-5" id="addIncomeForm">
+            <form class="m-5" id="addExpenseForm">
                 <div class="mb-3">
-                  <label for="incomeAmountInput" class="form-label">Income amount:</label>
-                  <input type="number" step="0.01" min="0" class="form-control" id="incomeAmountInput" aria-describedby="incomeAmountInput" required>
-                  <div id="incomeAmountInput" class="form-text">Enter the number to two decimal places.</div>
+                  <label for="expenseAmountInput" class="form-label">Expense amount:</label>
+                  <input type="number" step="0.01" min="0" class="form-control" id="expenseAmountInput" aria-describedby="expenseAmountInputText" required>
+                  <div id="expenseAmountInputText" class="form-text">Enter the number to two decimal places.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="incomeDate" class="form-label">Income date:</label>
-                    <input type="text" class="datepicker form-control" id="incomeDate" required>
+                    <label for="expensePaymentMethod" class="form-label">Payment method</label>
+                    <div id="expensePaymentMethod">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Cash" required>
+                            <label class="form-check-label" for="inlineRadio1">Cash</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Debit Card" required>
+                            <label class="form-check-label" for="inlineRadio2">Debit Card</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Credit Card" required>
+                            <label class="form-check-label" for="inlineRadio3">Credit Card</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="incomeCategory" class="form-label">Income category:</label>
-                    <select class="form-select" aria-label="Income Category:" id="incomeCategory" required>
-                        <option value="" disabled selected hidden>Select an income category</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Bank interest">Bank interest</option>
-                        <option value="Allegro sale">Allegro sale</option>
+                    <label for="expenseDate" class="form-label">Expense date:</label>
+                    <input type="text" class="datepicker form-control" id="expenseDate" required>
+                </div>
+                <div class="mb-3">
+                    <label for="expenseCategory" class="form-label">Expense category:</label>
+                    <select class="form-select" aria-label="Expense Category:" id="expenseCategory" required>
+                        <option value="" disabled selected hidden>Select an expense category</option>
+                        <option value="Food">Food</option>
+                        <option value="Home">Home</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Telecommunication">Telecommunication</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Hygiene">Hygiene</option>
+                        <option value="Kids">Kids</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Travels">Travels</option>
+                        <option value="Courses">Courses</option>
+                        <option value="Books">Books</option>
+                        <option value="Savings">Savings</option>
+                        <option value="Retirement">Retirement</option>
+                        <option value="Repayment of Debts">Repayment of Debts</option>
+                        <option value="Donation">Donation</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                  <label for="incomeTextArea" class="form-label">Comment:</label>
-                  <textarea class="form-control" id="incomeTextArea" rows="3"></textarea>
+                  <label for="expenseTextArea" class="form-label">Comment:</label>
+                  <textarea class="form-control" id="expenseTextArea" rows="3"></textarea>
                 </div>
                 <div class="mb-3 d-flex gap-2">
-                    <button type="submit" class="btn btn-success" id="addIncomeSubmit">Add Income</button>
+                    <button type="submit" class="btn btn-success" id="addExpenseSubmit">Add Expense</button>
                     <button type="reset" class="btn btn-danger">Cancel</button>
                 </div>
                 

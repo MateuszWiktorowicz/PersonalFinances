@@ -43,9 +43,22 @@ function addIncome() {
     localStorage.setItem("operations", JSON.stringify(operations));
 }
 
+function confirmIncomeAdded() {
+    $("#addIncomeForm").after("<div class='text-center text-success incomeAddInfo'>Income added!</div>");
+
+    setTimeout(function() {
+        $(".incomeAddInfo").fadeOut('slow', function() {
+            $(this).remove();
+        });
+    }, 1500);
+}
+
 welcomeLoggedInUser();
+
 $("#addIncomeForm").submit(function(event) {
     event.preventDefault();
 
     addIncome();
+    $(this)[0].reset();
+    confirmIncomeAdded();
 });

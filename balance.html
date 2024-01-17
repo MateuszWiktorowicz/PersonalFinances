@@ -47,7 +47,15 @@
                 <div class="mb-5">Period</div>
             </div>
             <div class="d-flex flex-row-reverse mb-3">
-                <div>Balance period</div>
+                <div>
+                    <label for="balancePeriod" class="form-label">Choose balance period:</label>
+                    <select class="form-select" aria-label="Default select example" id="balancePeriod">
+                        <option value="current month"selected>Current month</option>
+                        <option value="last month">Last month</option>
+                        <option value="current year">Current Year</option>
+                        <option value="Custom">Custom</option>
+                      </select>
+                </div>
             </div>
             <div class="d-flex justify-content-between mb-5">
                 <div>Expenses:</div>
@@ -70,6 +78,7 @@
     <script src="./userManager.js"></script>
     <script src="./accountManager.js"></script>
     <script src="./dataPicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="./dateManager.js"></script>
 </body>
 
 </html>

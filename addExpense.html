@@ -53,16 +53,16 @@
                     <label for="expensePaymentMethod" class="form-label">Payment method</label>
                     <div id="expensePaymentMethod">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Cash" required>
-                            <label class="form-check-label" for="inlineRadio1">Cash</label>
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="Cash" value="Cash" required>
+                            <label class="form-check-label" for="Cash">Cash</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Debit Card" required>
-                            <label class="form-check-label" for="inlineRadio2">Debit Card</label>
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="Debit Card" value="Debit Card" required>
+                            <label class="form-check-label" for="Debit Card">Debit Card</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Credit Card" required>
-                            <label class="form-check-label" for="inlineRadio3">Credit Card</label>
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="Credit Card" value="Credit Card" required>
+                            <label class="form-check-label" for="Credit Card">Credit Card</label>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                   <label for="expenseTextArea" class="form-label">Comment:</label>
                   <textarea class="form-control" id="expenseTextArea" rows="3"></textarea>
                 </div>
-                <div class="mb-3 d-flex gap-2">
+                <div class="mb-3 d-flex gap-2 formButtons">
                     <button type="submit" class="btn btn-success" id="addExpenseSubmit">Add Expense</button>
                     <button type="reset" class="btn btn-danger">Cancel</button>
                 </div>

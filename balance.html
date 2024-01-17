@@ -43,37 +43,22 @@
     </nav>
     <main>
         <div class="d-flex flex-column m-5 p-5 bg-white opacity-100 rounded">
-            <form class="m-5" id="addIncomeForm">
-                <div class="mb-3">
-                  <label for="incomeAmountInput" class="form-label">Income amount:</label>
-                  <input type="number" step="0.01" min="0" class="form-control" id="incomeAmountInput" aria-describedby="incomeAmountInput" required>
-                  <div id="incomeAmountInput" class="form-text">Enter the number to two decimal places.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="incomeDate" class="form-label">Income date:</label>
-                    <input type="text" class="datepicker form-control" id="incomeDate" required>
-                </div>
-                <div class="mb-3">
-                    <label for="incomeCategory" class="form-label">Income category:</label>
-                    <select class="form-select" aria-label="Income Category:" id="incomeCategory" required>
-                        <option value="" disabled selected hidden>Select an income category</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Bank interest">Bank interest</option>
-                        <option value="Allegro sale">Allegro sale</option>
-                        <option value="Others">Others</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                  <label for="incomeTextArea" class="form-label">Comment:</label>
-                  <textarea class="form-control" id="incomeTextArea" rows="3"></textarea>
-                </div>
-                <div class="mb-3 d-flex gap-2 formButtons">
-                    <button type="submit" class="btn btn-success" id="addIncomeSubmit">Add Income</button>
-                    <button type="reset" class="btn btn-danger">Cancel</button>
-                </div>
-                
-            </form>
-                   
+            <div class="d-flex justify-content-center mb-2">
+                <div class="mb-5">Period</div>
+            </div>
+            <div class="d-flex flex-row-reverse mb-3">
+                <div>Balance period</div>
+            </div>
+            <div class="d-flex justify-content-between mb-5">
+                <div>Expenses:</div>
+                <div>Balance</div>
+                <div>Incomes</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <div>Expenses List:</div>
+                <div>Chart</div>
+                <div>Incomes List:</div>
+            </div>
         </div>
     </main>
     <footer class="text-center bg-white">

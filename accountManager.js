@@ -118,7 +118,7 @@ function countObj() {
 
 welcomeLoggedInUser();
 loadOperations();
-countObj();
+
 
 $("#addIncomeForm").submit(function(event) {
     event.preventDefault();

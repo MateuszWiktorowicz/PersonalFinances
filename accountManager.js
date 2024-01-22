@@ -213,7 +213,7 @@ function displayAccountOperationsFromPeriod(startDate, endDate) {
 
             incomesCounter++;
         } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            $("#expensesList").after("<div class='d-flex gap-3 border-bottom balanceScreen'><div>" + incomesCounter + "</div><div>" + operations[i].amount + " PLN</div><div>" + operations[i].category + "</div><div>" + operations[i].date + "</div><div>" + operations[i].comment + "</div></div>");
+            $("#expensesList").after("<div class='d-flex gap-3 border-bottom balanceScreen'><div>" + expensesCounter + "</div><div>" + operations[i].amount + " PLN</div><div>" + operations[i].category + "</div><div>" + operations[i].date + "</div><div>" + operations[i].comment + "</div></div>");
 
             expensesCounter++;
         }

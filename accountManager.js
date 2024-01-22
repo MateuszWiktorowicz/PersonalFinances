@@ -158,6 +158,33 @@ function showBalanceCurrentYear() {
         return false;
     }
 }
+function displayDataPickersInCustomPeriodBalance() {
+    $("#periodContainer").append("<div class='mb-3'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
+
+    $("#periodContainer").append("<div class='mb-3'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div>")
+
+    $("#periodContainer").append("<div class='pt-4'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
+
+
+    $(".datepicker").datepicker({  
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+    });
+    $(".datepicker").datepicker('setDate', new Date());
+}
+function showCustomPeriodBalance() {
+    displayDataPickersInCustomPeriodBalance();
+
+    $("#customPeriodButton").click(function() {
+        $(".balanceScreen").remove();
+        countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
+        displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
+
+        $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+    })
+    
+    
+}
 
 function countBalanceFromPeriod(startDate, endDate) {
     var incomesTotal = 0;
@@ -233,6 +260,7 @@ $("#balancePeriod").change(function () {
             showBalanceCurrentYear();
             break;
         case "Custom":
+            showCustomPeriodBalance();
             break;
     }
 })

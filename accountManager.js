@@ -96,7 +96,7 @@ function showBalanceCurrentYear() {
     var beginOfCurrentYear =  new Date().getFullYear() + "-01-01";
     var endOfCurrentYear = new Date().getFullYear() + "-12-31";
 
-    
+    $("#choosenBalancePeriod").text(beginOfCurrentYear + " - " + endOfCurrentYear);
  
     countBalanceFromPeriod(beginOfCurrentYear, endOfCurrentYear);
     displayAccountOperationsFromPeriod(beginOfCurrentYear, endOfCurrentYear);
@@ -114,9 +114,11 @@ function showBalanceCurrentYear() {
     var beginOfMonth = currentYear + "-" + currentMonthStr + "-01";
     var endOfMonth =   currentYear + "-" + currentMonthStr + "-" + lastDayOfMonth;
 
+    $("#choosenBalancePeriod").text(beginOfMonth + " - " + endOfMonth);
+   
     countBalanceFromPeriod(beginOfMonth, endOfMonth);
     displayAccountOperationsFromPeriod(beginOfMonth, endOfMonth);
-    $("#chossenBalancePeriod").text(beginOfMonth + " - " + endOfMonth);
+   
 
  }
 
@@ -138,8 +140,7 @@ function showBalanceCurrentYear() {
     var beginOfMonth = year +  "-" + lastMonthStr + "-01";
     var endOfMonth = year + "-" + lastMonthStr + "-" + lastDayOfMonth;
 
-    beginOfMonth = new Date(beginOfMonth).getTime();
-    endOfMonth = new Date(endOfMonth).getTime();
+    $("#choosenBalancePeriod").text(beginOfMonth + " - " + endOfMonth);
     
     
     countBalanceFromPeriod(beginOfMonth, endOfMonth);
@@ -218,6 +219,7 @@ $("#addExpenseForm").submit(function(event) {
 
 $("#balancePeriod").change(function () {
     $(".balanceScreen").remove();
+    $("#choosenBalancePeriod").text("");
     var selectedOption = $(this).val();
 
     switch (selectedOption) {

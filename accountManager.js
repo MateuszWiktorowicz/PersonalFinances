@@ -159,11 +159,11 @@ function showBalanceCurrentYear() {
     }
 }
 function displayDataPickersInCustomPeriodBalance() {
-    $("#periodContainer").append("<div class='mb-3'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
+    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
 
-    $("#periodContainer").append("<div class='mb-3'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div>")
+    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div>")
 
-    $("#periodContainer").append("<div class='pt-4'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
+    $("#periodContainer").append("<div class='pt-4 customPeriod'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
 
 
     $(".datepicker").datepicker({  
@@ -184,6 +184,23 @@ function showCustomPeriodBalance() {
     })
     
     
+}
+
+function sumOperationByCategory(startDate, endDate, type) {
+    const categorySums = {};
+
+    for (const operation of operations) {
+        const { category, amount } = operation;
+        if  (checkIsDateInPeriod(startDate, endDate, operation.date) && operation instanceof type && operation.userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            if (!categorySums[category]) {
+                categorySums[category] = amount;
+            } else {
+                categorySums[category] += amount;
+            }
+        }
+            
+    }
+    return categorySums;
 }
 
 function countBalanceFromPeriod(startDate, endDate) {
@@ -209,15 +226,21 @@ function displayAccountOperationsFromPeriod(startDate, endDate) {
     
     for (var i = 0; i < operations.length; i++) {
         if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            $("#incomesList").after("<div class='d-flex gap-3 border-bottom balanceScreen'><div>" + incomesCounter + "</div><div>" + operations[i].amount + " PLN</div><div>" + operations[i].category + "</div><div>" + operations[i].date + "</div><div>" + operations[i].comment + "</div></div>");
+            $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + incomesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
 
             incomesCounter++;
         } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            $("#expensesList").after("<div class='d-flex gap-3 border-bottom balanceScreen'><div>" + expensesCounter + "</div><div>" + operations[i].amount + " PLN</div><div>" + operations[i].category + "</div><div>" + operations[i].date + "</div><div>" + operations[i].comment + "</div></div>");
+            $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + expensesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
 
             expensesCounter++;
         }
     }
+}
+
+function lastSearchDataRemove() {
+    $(".balanceScreen").remove();
+    $("#choosenBalancePeriod").text("");
+    $(".customPeriod").remove();
 }
  
 
@@ -245,8 +268,8 @@ $("#addExpenseForm").submit(function(event) {
 });
 
 $("#balancePeriod").change(function () {
-    $(".balanceScreen").remove();
-    $("#choosenBalancePeriod").text("");
+    lastSearchDataRemove();
+
     var selectedOption = $(this).val();
 
     switch (selectedOption) {

@@ -31,14 +31,6 @@ function welcomeLoggedInUser() {
     }
 } 
 
-$(function () { 
-    $(".datepicker").datepicker({  
-        format: 'mm/dd/yyyy',
-        startDate: '-3d',
-        autoclose: true,
-    });
-    $(".datepicker").datepicker('setDate', new Date());
-});
 
 function addIncome() {
     var operationId = operations.length === 0 ? 1 : operations.length + 1;
@@ -69,7 +61,6 @@ function addExpense() {
     localStorage.setItem("operations", JSON.stringify(operations));
 }
 
-
 function confirmAccountOperationAdded() {
     $(".formButtons").after("<div class='text-center text-success operationAddInfo'>Operation successfully added!</div>");
 
@@ -79,6 +70,7 @@ function confirmAccountOperationAdded() {
         });
     }, 1500);
 }
+
 
 function loadOperations() {
     var storedOperations = localStorage.getItem("operations");
@@ -98,27 +90,166 @@ function loadOperations() {
     }
 }
 
-function countObj() {
-    var inc = 0;
-    var exp = 0;
-    for (var i = 0; i < operations.length; i++) {
-        var operation = operations[i];
 
-        if (operation instanceof Expense) {
+function showBalanceCurrentYear() {
+   
+    var beginOfCurrentYear =  new Date().getFullYear() + "-01-01";
+    var endOfCurrentYear = new Date().getFullYear() + "-12-31";
+
+    $("#choosenBalancePeriod").text(beginOfCurrentYear + " - " + endOfCurrentYear);
+ 
+    countBalanceFromPeriod(beginOfCurrentYear, endOfCurrentYear);
+    displayAccountOperationsFromPeriod(beginOfCurrentYear, endOfCurrentYear);
+ 
+ }
+
+ function showBalanceCurrentMonth() {
+    var currentYear = new Date().getFullYear();
+    var currentMonth = new Date().getMonth();
+    var lastDayOfMonth = getLastDayOfMonth(currentYear, currentMonth);
+
+    var currentMonthStr = currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : (currentMonth + 1);
+
+    
+    var beginOfMonth = currentYear + "-" + currentMonthStr + "-01";
+    var endOfMonth =   currentYear + "-" + currentMonthStr + "-" + lastDayOfMonth;
+
+    $("#choosenBalancePeriod").text(beginOfMonth + " - " + endOfMonth);
+   
+    countBalanceFromPeriod(beginOfMonth, endOfMonth);
+    displayAccountOperationsFromPeriod(beginOfMonth, endOfMonth);
+   
+
+ }
+
+ function showBalanceLastMonth() {
+    var year = new Date().getFullYear();
+    var currentMonth = new Date().getMonth();
+    var lastMonth;
+
+    if (currentMonth === 0) {
+        lastMonth = 11;
+        year--;
+    } else {
+        lastMonth = currentMonth - 1;
+    }
+
+    var lastDayOfMonth = getLastDayOfMonth(year, lastMonth);
+    var lastMonthStr = lastMonth + 1 < 10 ? "0" + (lastMonth + 1).toString() : (lastMonth + 1).toString();
+
+    var beginOfMonth = year +  "-" + lastMonthStr + "-01";
+    var endOfMonth = year + "-" + lastMonthStr + "-" + lastDayOfMonth;
+
+    $("#choosenBalancePeriod").text(beginOfMonth + " - " + endOfMonth);
+    
+    
+    countBalanceFromPeriod(beginOfMonth, endOfMonth);
+    displayAccountOperationsFromPeriod(beginOfMonth, endOfMonth);
+ }
+
+ function checkIsDateInPeriod(startDate, endDate, operationDate) {
+    var operationDate = new Date(operationDate).getTime();
+    var startDate = new Date(startDate).getTime();
+    var endDate = new Date(endDate).getTime();
+
+    if (operationDate >= startDate && operationDate <= endDate) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function displayDataPickersInCustomPeriodBalance() {
+    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
+
+    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div>")
+
+    $("#periodContainer").append("<div class='pt-4 customPeriod'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
+
+
+    $(".datepicker").datepicker({  
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+    });
+    $(".datepicker").datepicker('setDate', new Date());
+}
+function showCustomPeriodBalance() {
+    displayDataPickersInCustomPeriodBalance();
+
+    $("#customPeriodButton").click(function() {
+        $(".balanceScreen").remove();
+        countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
+        displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
+
+        $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+    })
+    
+    
+}
+
+function sumOperationByCategory(startDate, endDate, type) {
+    const categorySums = {};
+
+    for (const operation of operations) {
+        const { category, amount } = operation;
+        if  (checkIsDateInPeriod(startDate, endDate, operation.date) && operation instanceof type && operation.userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            if (!categorySums[category]) {
+                categorySums[category] = amount;
+            } else {
+                categorySums[category] += amount;
+            }
+        }
             
-            exp++;
-        } else if (operation instanceof Income) {
-            inc++;
+    }
+    return categorySums;
+}
+
+function countBalanceFromPeriod(startDate, endDate) {
+    var incomesTotal = 0;
+    var expensesTotal = 0;
+
+    for (var i = 0; i < operations.length; i++) {
+        if  (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            incomesTotal += parseFloat(operations[i].amount);
+        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            expensesTotal += parseFloat(operations[i].amount);
         }
     }
 
-    console.log('Total Incomes:', inc);
-    console.log('Total Expenses:', exp);
+    $("#expensesTotal").after("<div class='balanceScreen'>" + expensesTotal + " PLN</div>");
+    $("#incomesTotal").after("<div class='balanceScreen'>" + incomesTotal + " PLN</div>");
+    $("#balanceQuote").after("<div class='balanceScreen'>" + (incomesTotal - expensesTotal) + " PLN</div>");
 }
+
+function displayAccountOperationsFromPeriod(startDate, endDate) {
+    var incomesCounter = 1;
+    var expensesCounter = 1;
+    
+    for (var i = 0; i < operations.length; i++) {
+        if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + incomesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
+
+            incomesCounter++;
+        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + expensesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
+
+            expensesCounter++;
+        }
+    }
+}
+
+function lastSearchDataRemove() {
+    $(".balanceScreen").remove();
+    $("#choosenBalancePeriod").text("");
+    $(".customPeriod").remove();
+}
+ 
+
+ 
+
 
 welcomeLoggedInUser();
 loadOperations();
-countObj();
+
 
 $("#addIncomeForm").submit(function(event) {
     event.preventDefault();
@@ -135,3 +266,25 @@ $("#addExpenseForm").submit(function(event) {
     $(this)[0].reset();
     confirmAccountOperationAdded();
 });
+
+$("#balancePeriod").change(function () {
+    lastSearchDataRemove();
+
+    var selectedOption = $(this).val();
+
+    switch (selectedOption) {
+        case "current month":
+            showBalanceCurrentMonth();
+            break;     
+        case "last month":
+            showBalanceLastMonth();
+            break;         
+        case "current year":
+            showBalanceCurrentYear();
+            break;
+        case "Custom":
+            showCustomPeriodBalance();
+            break;
+    }
+})
+

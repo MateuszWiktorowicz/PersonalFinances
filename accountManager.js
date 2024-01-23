@@ -100,6 +100,9 @@ function showBalanceCurrentYear() {
  
     countBalanceFromPeriod(beginOfCurrentYear, endOfCurrentYear);
     displayAccountOperationsFromPeriod(beginOfCurrentYear, endOfCurrentYear);
+   
+    drawCharts(beginOfCurrentYear, endOfCurrentYear, Income);
+    drawCharts(beginOfCurrentYear, endOfCurrentYear, Expense);
  
  }
 
@@ -118,6 +121,9 @@ function showBalanceCurrentYear() {
    
     countBalanceFromPeriod(beginOfMonth, endOfMonth);
     displayAccountOperationsFromPeriod(beginOfMonth, endOfMonth);
+
+    drawCharts(beginOfMonth, endOfMonth, Income);
+    drawCharts(beginOfMonth, endOfMonth, Expense);
    
 
  }
@@ -145,6 +151,9 @@ function showBalanceCurrentYear() {
     
     countBalanceFromPeriod(beginOfMonth, endOfMonth);
     displayAccountOperationsFromPeriod(beginOfMonth, endOfMonth);
+
+    drawCharts(beginOfMonth, endOfMonth, Income);
+    drawCharts(beginOfMonth, endOfMonth, Expense);
  }
 
  function checkIsDateInPeriod(startDate, endDate, operationDate) {
@@ -181,6 +190,9 @@ function showCustomPeriodBalance() {
         displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
 
         $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+
+        drawCharts($("#startDate").val(), $("#endDate").val(), Income);
+        drawCharts($("#startDate").val(), $("#endDate").val(), Expense);
     })
     
     
@@ -202,6 +214,58 @@ function sumOperationByCategory(startDate, endDate, type) {
     }
     return categorySums;
 }
+
+function generateRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function generateArrayOfColors(lengthOfArray) {
+    const colors = [];
+    for (let i = 0; i < lengthOfArray; i++) {
+        colors.push(generateRandomColor());
+    }
+    return colors;
+}
+
+function getObjectName(type) {
+    if (type === Income) {
+        return "incomes"
+    } else {
+        return "expenses"
+    }
+}
+function drawCharts(startDate, endDate, type) {
+    const categories = Object.keys(sumOperationByCategory(startDate, endDate, type))
+    const amounts = Object.values(sumOperationByCategory(startDate, endDate, type))
+
+    const colors = generateArrayOfColors(categories.length);
+    
+    var chartName = getObjectName(type) + "Chart";
+    
+    
+    new Chart(chartName, {
+        type: "pie",
+        data: {
+          labels: categories,
+          datasets: [{
+            backgroundColor: colors,
+            data: amounts
+          }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: getObjectName(type) + " from period: " + startDate + " - " + endDate
+            }
+        }
+      });
+}
+
 
 function countBalanceFromPeriod(startDate, endDate) {
     var incomesTotal = 0;

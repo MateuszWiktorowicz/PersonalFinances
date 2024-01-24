@@ -142,13 +142,12 @@ $("#expenseCategoryBtn").click(function() {
     
 })
 
-$('#expensesCategories').on('hidden.bs.modal', function (event) {
-    $("#expensesCategories .modal-body").empty();
-});
 
 
 
 function iterateCategoryElementsAndSettingButtons(category) {
+    $(".categoriesSettings").remove();
+    
     for (var i = 0; i < category.length; i++) {
         $("#expensesCategories .btn-success").before("<div class='categoriesSettings d-flex justify-content-between border-bottom mb-3 gap-2'><div>" + category[i] + "</div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
     }

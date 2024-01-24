@@ -97,6 +97,16 @@ function addNewCategory(event, category) {
     }
 }
 
+function iterateCategoryElementsAndSettingButtons(category, modalId) {
+    $(".categoriesSettings").remove();
+
+    
+    for (var i = 0; i < category.length; i++) {
+        $("#" + modalId + " .btn-success").before("<div class='categoriesSettings d-flex justify-content-between border-bottom mb-3 gap-2'><div>" + category[i] + "</div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
+    }
+
+}
+
 function loadUserSettings() {
     var expenseCategoriesJson = localStorage.getItem("expenseCategories");
 
@@ -111,21 +121,48 @@ function loadUserSettings() {
     } else {
         console.log("Expense categories not found in local storage.");
     }
+
+    var incomeCategoriesJson = localStorage.getItem("incomeCategories");
+
+    if (incomeCategoriesJson !== null) {
+        try {
+   
+            incomesCategories = JSON.parse(incomeCategoriesJson);
+        } catch (error) {
+
+            console.error("Error parsing expenseCategories JSON:", error);
+        }
+    } else {
+        console.log("Expense categories not found in local storage.");
+    }
 }
 
 
 
-$("#expensesCategories").on("click", ".btn-info", function() {
+$("#expensesCategories").on("click", ".btn-info", function(event) {
     handleEditCategoryButtonClick(event, expenseCategories);
     localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
 });
-$("#expensesCategories").on("click", ".btn-danger", function() {
+$("#expensesCategories").on("click", ".btn-danger", function(event) {
     handleDeleteCategoryButtonClick(event, expenseCategories);
     localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
 });
-$("#expensesCategories").on("click", ".btn-success", function() {
+$("#expensesCategories").on("click", ".btn-success", function(event) {
     addNewCategory(event, expenseCategories);
     localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
+});
+
+$("#incomesCategories").on("click", ".btn-info", function(event) {
+    handleEditCategoryButtonClick(event, incomesCategories);
+    localStorage.setItem("incomeCategories", JSON.stringify(incomesCategories));
+});
+$("#incomesCategories").on("click", ".btn-danger", function(event) {
+    handleDeleteCategoryButtonClick(event, incomesCategories);
+    localStorage.setItem("incomeCategories", JSON.stringify(incomesCategories));
+});
+$("#incomesCategories").on("click", ".btn-success", function(event) {
+    addNewCategory(event, incomesCategories);
+    localStorage.setItem("incomeCategories", JSON.stringify(incomesCategories));
 });
 
 
@@ -138,21 +175,19 @@ $("#newDataForm").submit(function(event) {
 });
 
 $("#expenseCategoryBtn").click(function() {
-    iterateCategoryElementsAndSettingButtons(expenseCategories);
+    iterateCategoryElementsAndSettingButtons(expenseCategories, "expensesCategories");
+    
+})
+
+$("#incomeCategoryBtn").click(function() {
+    iterateCategoryElementsAndSettingButtons(incomesCategories, "incomesCategories");
     
 })
 
 
 
 
-function iterateCategoryElementsAndSettingButtons(category) {
-    $(".categoriesSettings").remove();
-    
-    for (var i = 0; i < category.length; i++) {
-        $("#expensesCategories .btn-success").before("<div class='categoriesSettings d-flex justify-content-between border-bottom mb-3 gap-2'><div>" + category[i] + "</div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
-    }
 
-}
 
 
 loadUserSettings();

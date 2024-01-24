@@ -130,10 +130,24 @@ function loadUserSettings() {
             incomesCategories = JSON.parse(incomeCategoriesJson);
         } catch (error) {
 
-            console.error("Error parsing expenseCategories JSON:", error);
+            console.error("Error parsing incomeCategories JSON:", error);
         }
     } else {
-        console.log("Expense categories not found in local storage.");
+        console.log("Income categories not found in local storage.");
+    }
+
+    var paymentCategoriesJson = localStorage.getItem("paymentMethods");
+
+    if (paymentCategoriesJson !== null) {
+        try {
+   
+            paymentMethods = JSON.parse(paymentCategoriesJson);
+        } catch (error) {
+
+            console.error("Error parsing paymentMethods JSON:", error);
+        }
+    } else {
+        console.log("Payment methods not found in local storage.");
     }
 }
 
@@ -165,6 +179,19 @@ $("#incomesCategories").on("click", ".btn-success", function(event) {
     localStorage.setItem("incomeCategories", JSON.stringify(incomesCategories));
 });
 
+$("#paymentCategories").on("click", ".btn-info", function(event) {
+    handleEditCategoryButtonClick(event, paymentMethods);
+    localStorage.setItem("paymentMethods", JSON.stringify(paymentMethods));
+});
+$("#paymentCategories").on("click", ".btn-danger", function(event) {
+    handleDeleteCategoryButtonClick(event, paymentMethods);
+    localStorage.setItem("paymentMethods", JSON.stringify(paymentMethods));
+});
+$("#paymentCategories").on("click", ".btn-success", function(event) {
+    addNewCategory(event, paymentMethods);
+    localStorage.setItem("paymentMethods", JSON.stringify(paymentMethods));
+});
+
 
 
 $("#newDataForm").submit(function(event) {
@@ -181,6 +208,11 @@ $("#expenseCategoryBtn").click(function() {
 
 $("#incomeCategoryBtn").click(function() {
     iterateCategoryElementsAndSettingButtons(incomesCategories, "incomesCategories");
+    
+})
+
+$("#paymentCategoryBtn").click(function() {
+    iterateCategoryElementsAndSettingButtons(paymentMethods, "paymentCategories");
     
 })
 

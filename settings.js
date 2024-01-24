@@ -1,3 +1,5 @@
+
+
 function changeUserData() {
     saveNewUserData();
 }
@@ -60,6 +62,73 @@ function saveNewUserData() {
     }
 }
 
+function handleDeleteCategoryButtonClick(event, category) {
+    var parentContainer = $(event.target).closest('.categoriesSettings');
+    var categoryIndex = parentContainer.index();
+    var confirmDelete = confirm("Are you sure you want to delete the category '" + category[categoryIndex] + "'?");
+
+    if (confirmDelete) {
+        category.splice(categoryIndex, 1);
+        parentContainer.remove();
+    }
+}
+
+function handleEditCategoryButtonClick(event, category) {
+    var parentContainer = $(event.target).closest('.categoriesSettings');
+    var categoryIndex = parentContainer.index();
+
+    var newCategory = prompt("Edit category:", category[categoryIndex]);
+   
+    if (newCategory !== null && newCategory !== "") {
+        category[categoryIndex] = newCategory;
+
+        parentContainer.find('div:first-child').text(newCategory);
+    }
+}
+
+function addNewCategory(event, category) {
+
+    var newCategory = prompt("Enter a new category:");
+
+    if (newCategory !== null && newCategory.trim() !== "") {
+        category.push(newCategory);
+
+        $(event.target).before("<div class='categoriesSettings d-flex justify-content-between border-bottom mb-3 gap-2'><div>" + newCategory + "</div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
+    }
+}
+
+function loadUserSettings() {
+    var expenseCategoriesJson = localStorage.getItem("expenseCategories");
+
+    if (expenseCategoriesJson !== null) {
+        try {
+   
+            expenseCategories = JSON.parse(expenseCategoriesJson);
+        } catch (error) {
+
+            console.error("Error parsing expenseCategories JSON:", error);
+        }
+    } else {
+        console.log("Expense categories not found in local storage.");
+    }
+}
+
+
+
+$("#expensesCategories").on("click", ".btn-info", function() {
+    handleEditCategoryButtonClick(event, expenseCategories);
+    localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
+});
+$("#expensesCategories").on("click", ".btn-danger", function() {
+    handleDeleteCategoryButtonClick(event, expenseCategories);
+    localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
+});
+$("#expensesCategories").on("click", ".btn-success", function() {
+    addNewCategory(event, expenseCategories);
+    localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
+});
+
+
 
 $("#newDataForm").submit(function(event) {
     event.preventDefault();
@@ -67,3 +136,24 @@ $("#newDataForm").submit(function(event) {
 
     $(this)[0].reset();
 });
+
+$("#expenseCategoryBtn").click(function() {
+    iterateCategoryElementsAndSettingButtons(expenseCategories);
+    
+})
+
+$('#expensesCategories').on('hidden.bs.modal', function (event) {
+    $("#expensesCategories .modal-body").empty();
+});
+
+
+
+function iterateCategoryElementsAndSettingButtons(category) {
+    for (var i = 0; i < category.length; i++) {
+        $("#expensesCategories .btn-success").before("<div class='categoriesSettings d-flex justify-content-between border-bottom mb-3 gap-2'><div>" + category[i] + "</div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
+    }
+
+}
+
+
+loadUserSettings();

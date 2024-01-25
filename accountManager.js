@@ -307,59 +307,6 @@ function lastSearchDataRemove() {
     $(".customPeriod").remove();
 }
 
-function populateSelectOptions(selectId, optionValues) {
-    const $selectElement = $("#" + selectId);
-
-    if ($selectElement.length) {
-        $.each(optionValues, function(index, value) {
-            $selectElement.append($("<option>", {
-                value: value,
-                text: value
-            }));
-        });
-    }
-}
-function populateRadioOptions(containerId, optionValues) {
-    const $container = $("#" + containerId);
-
-    if ($container.length) {
-        $.each(optionValues, function(index, value) {
-            const $radioDiv = $("<div class='form-check form-check-inline'>");
-            const $radioInput = $("<input>", {
-                class: "form-check-input",
-                type: "radio",
-                name: "paymentMethod",
-                id: value,
-                value: value,
-                required: true
-            });
-            const $radioLabel = $("<label>", {
-                class: "form-check-label",
-                for: value,
-                text: value
-            });
-
-            $container.append($radioDiv.append($radioInput, $radioLabel));
-        });
-    }
-}
-var expenseCategories = [
-    "Food", "Home", "Transport", "Telecommunication", "Healthcare",
-    "Clothes", "Hygiene", "Kids", "Entertainment", "Travels",
-    "Courses", "Books", "Savings", "Retirement", "Repayment of Debts",
-    "Donation", "Others"
-];
-var paymentMethods = ["Cash", "Debit Card", "Credit Card"];
-
-var incomesCategories = ["Salary", "Bank interest", "Allegro sale", "Others"]
-
-
-
-
-
-populateSelectOptions("expenseCategory", expenseCategories);
-populateSelectOptions("incomeCategory", incomesCategories);
-populateRadioOptions("expensePaymentMethod", paymentMethods);
 
 
 

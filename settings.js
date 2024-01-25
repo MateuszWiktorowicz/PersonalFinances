@@ -1,4 +1,6 @@
-
+var expenseCategories = [];
+var incomeCategories = [];
+var paymentMethod = [];
 
 function changeUserData() {
     saveNewUserData();
@@ -117,9 +119,21 @@ function loadUserSettings() {
         } catch (error) {
 
             console.error("Error parsing expenseCategories JSON:", error);
+            expenseCategories = [
+                "Food", "Home", "Transport", "Telecommunication", "Healthcare",
+                "Clothes", "Hygiene", "Kids", "Entertainment", "Travels",
+                "Courses", "Books", "Savings", "Retirement", "Repayment of Debts",
+                "Donation", "Others"
+            ];
         }
     } else {
         console.log("Expense categories not found in local storage.");
+        expenseCategories = [
+            "Food", "Home", "Transport", "Telecommunication", "Healthcare",
+            "Clothes", "Hygiene", "Kids", "Entertainment", "Travels",
+            "Courses", "Books", "Savings", "Retirement", "Repayment of Debts",
+            "Donation", "Others"
+        ];
     }
 
     var incomeCategoriesJson = localStorage.getItem("incomeCategories");
@@ -131,9 +145,11 @@ function loadUserSettings() {
         } catch (error) {
 
             console.error("Error parsing incomeCategories JSON:", error);
+            incomesCategories = ["Salary", "Bank interest", "Allegro sale", "Others"];
         }
     } else {
         console.log("Income categories not found in local storage.");
+        incomesCategories = ["Salary", "Bank interest", "Allegro sale", "Others"];
     }
 
     var paymentCategoriesJson = localStorage.getItem("paymentMethods");
@@ -143,20 +159,77 @@ function loadUserSettings() {
    
             paymentMethods = JSON.parse(paymentCategoriesJson);
         } catch (error) {
-
+            paymentMethods = ["Cash", "Debit Card", "Credit Card"];
             console.error("Error parsing paymentMethods JSON:", error);
         }
     } else {
+        paymentMethods = ["Cash", "Debit Card", "Credit Card"];
         console.log("Payment methods not found in local storage.");
     }
+
+    populateSelectOptions("expenseCategory", expenseCategories);
+    populateSelectOptions("incomeCategory", incomesCategories);
+    populateRadioOptions("expensePaymentMethod", paymentMethods);
 }
+
+function populateSelectOptions(selectId, optionValues) {
+    const $selectElement = $("#" + selectId);
+
+    if ($selectElement.length) {
+        $.each(optionValues, function(index, value) {
+            $selectElement.append($("<option>", {
+                value: value,
+                text: value
+            }));
+        });
+    }
+}
+function populateRadioOptions(containerId, optionValues) {
+    const $container = $("#" + containerId);
+
+    if ($container.length) {
+        $.each(optionValues, function(index, value) {
+            const $radioDiv = $("<div class='form-check form-check-inline'>");
+            const $radioInput = $("<input>", {
+                class: "form-check-input",
+                type: "radio",
+                name: "paymentMethod",
+                id: value,
+                value: value,
+                required: true
+            });
+            const $radioLabel = $("<label>", {
+                class: "form-check-label",
+                for: value,
+                text: value
+            });
+
+            $container.append($radioDiv.append($radioInput, $radioLabel));
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 $("#expensesCategories").on("click", ".btn-info", function(event) {
     handleEditCategoryButtonClick(event, expenseCategories);
     localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));
+    populateSelectOptions("expenseCategory", JSON.parse(localStorage.getItem("expenseCategories")));
 });
+
 $("#expensesCategories").on("click", ".btn-danger", function(event) {
     handleDeleteCategoryButtonClick(event, expenseCategories);
     localStorage.setItem("expenseCategories", JSON.stringify(expenseCategories));

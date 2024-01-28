@@ -19,17 +19,6 @@ function Expense(operationId, userId, amount, paymentMethod, date, category, com
 
 var operations = [];
 
-function welcomeLoggedInUser() {
-
-    var id = localStorage.getItem("idLoggedInUser")
-
-    if (id) {
-        userId = JSON.parse(id);
-        $("#welcomeNameBox").text(users[(userId - 1)].name + "!");
-    } else {
-        $("#welcomeNameBox").text("Friend!");
-    }
-} 
 
 
 function addIncome() {
@@ -156,17 +145,31 @@ function showBalanceCurrentYear() {
     drawCharts(beginOfMonth, endOfMonth, Expense);
  }
 
- function checkIsDateInPeriod(startDate, endDate, operationDate) {
-    var operationDate = new Date(operationDate).getTime();
-    var startDate = new Date(startDate).getTime();
-    var endDate = new Date(endDate).getTime();
+ function showCustomPeriodBalance() {
+    displayDataPickersInCustomPeriodBalance();
 
-    if (operationDate >= startDate && operationDate <= endDate) {
-        return true;
-    } else {
-        return false;
-    }
+    $("#customPeriodButton").click(function() {
+        $(".balanceScreen").remove();
+
+        if (isDateEarlierOrTheSame($("#startDate").val(), $("#endDate").val())) {
+            countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
+        displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
+
+        $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+
+        drawCharts($("#startDate").val(), $("#endDate").val(), Income);
+        drawCharts($("#startDate").val(), $("#endDate").val(), Expense);
+        
+        } else {
+            $("#periodContainer").append("<div class='dateWrongComunicate text-danger'>Starting date is later than ending date. Type dates again...</div>");
+            setTimeout(function() {
+                $(".dateWrongComunicate").remove();
+            }, 3000);
+            
+        }  
+    }) 
 }
+
 function displayDataPickersInCustomPeriodBalance() {
     $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
 
@@ -174,29 +177,47 @@ function displayDataPickersInCustomPeriodBalance() {
 
     $("#periodContainer").append("<div class='pt-4 customPeriod'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
 
-
     $(".datepicker").datepicker({  
         format: 'yyyy-mm-dd',
         autoclose: true,
     });
     $(".datepicker").datepicker('setDate', new Date());
 }
-function showCustomPeriodBalance() {
-    displayDataPickersInCustomPeriodBalance();
 
-    $("#customPeriodButton").click(function() {
-        $(".balanceScreen").remove();
-        countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
-        displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
+function countBalanceFromPeriod(startDate, endDate) {
+    var incomesTotal = 0;
+    var expensesTotal = 0;
 
-        $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+    for (var i = 0; i < operations.length; i++) {
+        if  (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            incomesTotal += parseFloat(operations[i].amount);
+        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            expensesTotal += parseFloat(operations[i].amount);
+        }
+    }
 
-        drawCharts($("#startDate").val(), $("#endDate").val(), Income);
-        drawCharts($("#startDate").val(), $("#endDate").val(), Expense);
-    })
-    
-    
+    $("#expensesTotal").after("<div class='balanceScreen'>" + expensesTotal + " PLN</div>");
+    $("#incomesTotal").after("<div class='balanceScreen'>" + incomesTotal + " PLN</div>");
+    $("#balanceQuote").after("<div class='balanceScreen'>" + (incomesTotal - expensesTotal) + " PLN</div>");
 }
+
+function displayAccountOperationsFromPeriod(startDate, endDate) {
+    var incomesCounter = 1;
+    var expensesCounter = 1;
+    
+    for (var i = 0; i < operations.length; i++) {
+        if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + incomesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
+
+            incomesCounter++;
+        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + expensesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
+
+            expensesCounter++;
+        }
+    }
+}
+
 
 function sumOperationByCategory(startDate, endDate, type) {
     const categorySums = {};
@@ -266,52 +287,21 @@ function drawCharts(startDate, endDate, type) {
       });
 }
 
-
-function countBalanceFromPeriod(startDate, endDate) {
-    var incomesTotal = 0;
-    var expensesTotal = 0;
-
-    for (var i = 0; i < operations.length; i++) {
-        if  (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            incomesTotal += parseFloat(operations[i].amount);
-        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            expensesTotal += parseFloat(operations[i].amount);
-        }
-    }
-
-    $("#expensesTotal").after("<div class='balanceScreen'>" + expensesTotal + " PLN</div>");
-    $("#incomesTotal").after("<div class='balanceScreen'>" + incomesTotal + " PLN</div>");
-    $("#balanceQuote").after("<div class='balanceScreen'>" + (incomesTotal - expensesTotal) + " PLN</div>");
-}
-
-function displayAccountOperationsFromPeriod(startDate, endDate) {
-    var incomesCounter = 1;
-    var expensesCounter = 1;
-    
-    for (var i = 0; i < operations.length; i++) {
-        if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Income && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + incomesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
-
-            incomesCounter++;
-        } else if (checkIsDateInPeriod(startDate, endDate, operations[i].date) && operations[i] instanceof Expense && operations[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
-            $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='col-1'>" + expensesCounter + "</div><div class='col-2'>" + operations[i].amount + " PLN</div><div class='col-2'>" + operations[i].category + "</div><div class='col-4'>" + operations[i].date + "</div><div class='col-3'>" + operations[i].comment + "</div></div>");
-
-            expensesCounter++;
-        }
-    }
-}
-
 function lastSearchDataRemove() {
     $(".balanceScreen").remove();
     $("#choosenBalancePeriod").text("");
     $(".customPeriod").remove();
 }
 
+function logout() {
+    localStorage.setItem("idLoggedInUser", JSON.stringify("0"));
+    window.location.href = "./index.html";
+}
 
-
-
-welcomeLoggedInUser();
-loadOperations();
+$(".logoutLink").click(function(event) {
+    event.preventDefault();
+    logout();
+});
 
 
 $("#addIncomeForm").submit(function(event) {
@@ -351,3 +341,9 @@ $("#balancePeriod").change(function () {
     }
 })
 
+$(document).ready(function() {
+    $("#balancePeriod").trigger('change');
+});
+
+welcomeLoggedInUser();
+loadOperations();

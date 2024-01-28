@@ -11,6 +11,19 @@ function register() {
     insertNewUser();
 }
 
+function welcomeLoggedInUser() {
+
+    var id = localStorage.getItem("idLoggedInUser")
+
+    if (id) {
+        userId = JSON.parse(id);
+        $("#welcomeNameBox").text(users[(userId - 1)].name + "!");
+    } else {
+        $("#welcomeNameBox").text("Friend!");
+    }
+} 
+
+
 function insertNewUser() {
     var userId = users.length === 0 ? 1 : users[users.length - 1].userId + 1;
     var name = $("#registerInputName").val();

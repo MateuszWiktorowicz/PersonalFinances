@@ -19,17 +19,6 @@ function Expense(operationId, userId, amount, paymentMethod, date, category, com
 
 var operations = [];
 
-function welcomeLoggedInUser() {
-
-    var id = localStorage.getItem("idLoggedInUser")
-
-    if (id) {
-        userId = JSON.parse(id);
-        $("#welcomeNameBox").text(users[(userId - 1)].name + "!");
-    } else {
-        $("#welcomeNameBox").text("Friend!");
-    }
-} 
 
 
 function addIncome() {
@@ -181,18 +170,30 @@ function displayDataPickersInCustomPeriodBalance() {
     });
     $(".datepicker").datepicker('setDate', new Date());
 }
+
 function showCustomPeriodBalance() {
     displayDataPickersInCustomPeriodBalance();
 
     $("#customPeriodButton").click(function() {
         $(".balanceScreen").remove();
-        countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
+
+        if (isDateEarlierOrTheSame($("#startDate").val(), $("#endDate").val())) {
+            countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
         displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
 
         $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
 
         drawCharts($("#startDate").val(), $("#endDate").val(), Income);
         drawCharts($("#startDate").val(), $("#endDate").val(), Expense);
+        
+        } else {
+            $("#periodContainer").append("<div class='dateWrongComunicate text-danger'>Starting date is later than ending date. Type dates again...</div>");
+            setTimeout(function() {
+                $(".dateWrongComunicate").remove();
+            }, 3000);
+            
+        }
+        
     })
     
     

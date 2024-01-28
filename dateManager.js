@@ -18,3 +18,14 @@ function isDateEarlierOrTheSame(date1, date2) {
     }
 }
 
+function checkIsDateInPeriod(startDate, endDate, operationDate) {
+    var operationDate = new Date(operationDate).getTime();
+    var startDate = new Date(startDate).getTime();
+    var endDate = new Date(endDate).getTime();
+
+    if (operationDate >= startDate && operationDate <= endDate) {
+        return true;
+    } else {
+        return false;
+    }
+}

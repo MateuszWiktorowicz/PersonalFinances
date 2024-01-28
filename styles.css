@@ -5,9 +5,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
-.navbar-toggler {
-    display: none;
-}
 
 main {
     flex: 1;
@@ -18,12 +15,3 @@ main {
     background-color: white;
 }
 
-@media (max-width: 768px) {
-    #navMainPageButtons .btn, #navMainMenu div{
-        display: none;
-    }
-
-    .navbar-toggler {
-        display: block;
-    }
-}

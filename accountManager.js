@@ -306,9 +306,8 @@ function lastSearchDataRemove() {
     $("#choosenBalancePeriod").text("");
     $(".customPeriod").remove();
 }
- 
 
- 
+
 
 
 welcomeLoggedInUser();

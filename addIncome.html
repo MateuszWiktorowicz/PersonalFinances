@@ -25,7 +25,7 @@
                 <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
                 <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
                 <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                <div><a class="text-reset text-decoration-none" href="#">Settings</a></div>
+                <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
                 <div><a class="text-reset text-decoration-none" href="#">Logout</a></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                     <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
                     <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
                     <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                    <div><a class="text-reset text-decoration-none" href="#">Settings</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
                     <div><a class="text-reset text-decoration-none" href="#">Logout</a></div>
                 </div>
             </div>
@@ -55,12 +55,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="incomeCategory" class="form-label">Income category:</label>
-                    <select class="form-select" aria-label="Income Category:" id="incomeCategory" required>
+                    <select class="form-select incomeCategories" aria-label="Income Category:" id="incomeCategory" required>
                         <option value="" disabled selected hidden>Select an income category</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Bank interest">Bank interest</option>
-                        <option value="Allegro sale">Allegro sale</option>
-                        <option value="Others">Others</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -86,6 +82,7 @@
     <script src="./accountManager.js"></script>
     <script src="./dataPicker/js/bootstrap-datepicker.min.js"></script>
     <script src="./dateManager.js"></script>
+    <script src="./settings.js"></script>
 </body>
 
 </html>

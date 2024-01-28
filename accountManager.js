@@ -352,3 +352,6 @@ $("#balancePeriod").change(function () {
     }
 })
 
+$(document).ready(function() {
+    $("#balancePeriod").trigger('change');
+});

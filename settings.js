@@ -167,13 +167,13 @@ function loadUserSettings() {
         console.log("Payment methods not found in local storage.");
     }
 
-    populateSelectOptions("expenseCategory", expenseCategories);
-    populateSelectOptions("incomeCategory", incomesCategories);
-    populateRadioOptions("expensePaymentMethod", paymentMethods);
+    populateSelectOptions("expenseCategories", expenseCategories);
+    populateSelectOptions("incomeCategories", incomesCategories);
+    populateRadioOptions("expensePaymentMethods", paymentMethods);
 }
 
 function populateSelectOptions(selectId, optionValues) {
-    const $selectElement = $("#" + selectId);
+    const $selectElement = $("." + selectId);
 
     if ($selectElement.length) {
         $.each(optionValues, function(index, value) {
@@ -185,7 +185,7 @@ function populateSelectOptions(selectId, optionValues) {
     }
 }
 function populateRadioOptions(containerId, optionValues) {
-    const $container = $("#" + containerId);
+    const $container = $("." + containerId);
 
     if ($container.length) {
         $.each(optionValues, function(index, value) {
@@ -209,7 +209,84 @@ function populateRadioOptions(containerId, optionValues) {
     }
 }
 
+function iterateAccountHistory(type) {
 
+    for (var i = 0; i < operations.length; i++) {
+        var operation = operations[i];
+        if (operation.userId === JSON.parse(localStorage.getItem("idLoggedInUser")) && operation instanceof type) {
+            $(".operationsHistory").append("<div class='d-flex operationsHistoryElement justify-content-between container'><div class='d-flex gap-3'><div class='operationId'>" + operation.operationId + "</div><div>" + operation.amount + "</div><div>" + operation.date + "</div><div>" + operation.category + "</div><div>" + operation.comment + "</div></div><div><button class='btn btn-info'>Edit</button><button class='btn btn-danger'>Delete</button></div></div>");
+        }
+        
+    }
+}
+
+function handleDeleteAccountOperationButtonClick() {
+    var parentContainer = $(this).closest('.operationsHistoryElement');
+    var operationIdElement = parentContainer.find('.operationId');
+    var operationId = operationIdElement.text();
+    var confirmDelete = confirm("Are you sure you want to delete the operation with ID '" + operationId + "'?");
+
+    if (confirmDelete) {
+        for (var i = 0; i < operations.length; i++) {
+            if (operations[i].operationId == operationId) {
+                operations.splice(i, 1);
+                break;
+            }
+        }
+        parentContainer.remove();
+    }
+    localStorage.setItem("operations", JSON.stringify(operations));
+}
+
+function handleEditAccountOperationButtonClick() {
+    var parentContainer = $(this).closest('.operationsHistoryElement');
+    var operationIdElement = parentContainer.find('.operationId');
+    var operationId = parseInt(operationIdElement.text());
+
+    if (operations[operationId - 1] instanceof Income) {
+        $('#editIncome').modal('show');
+        $("#editIncomeSubmit").click(function() {
+            editIncome(operationId - 1);
+        })
+    } else {
+        $('#editExpense').modal('show');
+        $("#editExpenseSubmit").click(function() {
+            editExpense(operationId - 1);
+        })
+    }
+}
+
+function editIncome(index) {
+    var operation = operations[index]
+    operation.amount = $("#editIncomeAmount").val();
+    operation.paymentMethod = $("#editExpensePaymentMethod").val();
+    operation.date = $("#editIncomeDate").val();
+    operation.category = $("#editIncomeCategory").val();
+    operation.comment = $("#editIncomeTextArea").val();
+
+    localStorage.setItem("operations", JSON.stringify(operations));
+}
+
+function editExpense(index) {
+    var operation = operations[index]
+    operation.amount = $("#editExpenseAmount").val();
+    operation.date = $("#editExpenseDate").val();
+    operation.category = $("#editExpenseCategory").val();
+    operation.comment = $("#editExpenseTextArea").val();
+
+    localStorage.setItem("operations", JSON.stringify(operations));
+}
+
+
+
+$("#operationsHistoryBtn").click(function() {
+    $(".operationsHistoryElement").remove();
+    iterateAccountHistory(Income);
+    iterateAccountHistory(Expense);
+})
+
+$(".operationsHistory").on("click", ".btn-danger", handleDeleteAccountOperationButtonClick);
+$(".operationsHistory").on("click", ".btn-info", handleEditAccountOperationButtonClick);
 
 
 

@@ -293,6 +293,17 @@ function lastSearchDataRemove() {
     $(".customPeriod").remove();
 }
 
+function logout() {
+    localStorage.setItem("idLoggedInUser", JSON.stringify("0"));
+    window.location.href = "./index.html";
+}
+
+$(".logoutLink").click(function(event) {
+    event.preventDefault();
+    logout();
+});
+
+
 $("#addIncomeForm").submit(function(event) {
     event.preventDefault();
 

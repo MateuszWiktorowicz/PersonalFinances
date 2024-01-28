@@ -37,7 +37,7 @@ function insertNewUser() {
 
         localStorage.setItem("users", JSON.stringify(users));
 
-        showRegistrationSuccessComunicate()
+        showRegistrationSuccessComunicate("registerLabel")
     }
 }
 
@@ -46,7 +46,7 @@ function checkIsUserExist(email) {
 
     for (var i = 0; i < users.length; i++) {
         if (email === users[i].email) {
-            $("#registerInputEmail").after("<div class='text-danger emailExistText'>Email is already in use.</div>");
+            $(".registerEmail").after("<div class='text-danger emailExistText'>Email is already in use.</div>");
             return true;
         } else {
             return false;
@@ -60,13 +60,13 @@ function checkArePasswordTheSame(pass1, pass2) {
     if (pass1 === pass2) {
         return true
     } else {
-        $("#confirmRegisterInputPassword").after("<div class='text-danger passwordConfirmText'>Password are not the same.</div>");
+        $(".confirmPassword").after("<div class='text-danger passwordConfirmText'>Password are not the same.</div>");
         return false;
     }
 }
 
-function showRegistrationSuccessComunicate() {
-    $("#registerLabel .modal-footer").after("<div class='text-center text-success mb-3' id='registrationSuccessInfo'> Registration correct! </div>")
+function showRegistrationSuccessComunicate(containerId) {
+    $("#" + containerId + " .modal-footer").after("<div class='text-center text-success mb-3' id='registrationSuccessInfo'> Registration correct! </div>")
         
     setTimeout(function() {
         $("#registrationSuccessInfo").fadeOut('slow', function() {
@@ -110,6 +110,35 @@ function loadUsers() {
     }
 }
 
+function saveNewUserData() {
+
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].userId === JSON.parse(localStorage.getItem("idLoggedInUser"))) {
+            var name = $("#newName").val();
+            var email = $("#newEmail").val();
+            var password = $("#newPassword").val();
+            var confirmPassword = $("#confirmNewPassword").val();
+
+            if (!checkIsUserExist(email) && checkArePasswordTheSame(password, confirmPassword)) {
+                
+                users[i].name = name;
+                users[i].email = email;
+                users[i].password = password;
+        
+                localStorage.setItem("users", JSON.stringify(users));
+        
+                showRegistrationSuccessComunicate("newUserDataForm");
+            }
+            break;
+        }
+    }
+}
+
+function changeUserData() {
+    saveNewUserData();
+}
+
+
 
 loadUsers();
 
@@ -126,3 +155,10 @@ $("#loginForm").submit(function(event) {
 
     $(this)[0].reset();
 })
+
+$("#newDataForm").submit(function(event) {
+    event.preventDefault();
+    changeUserData();
+
+    $(this)[0].reset();
+});

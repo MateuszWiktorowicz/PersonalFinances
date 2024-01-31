@@ -85,6 +85,7 @@ function showLoginFailAttempt() {
     }, 1500);
 }
 
+/*
 function login() {
     var email = $("#loginInputEmail").val();
     var password = $("#loginInputPassword").val();
@@ -99,6 +100,8 @@ function login() {
     
     if (!loggedIn) {showLoginFailAttempt()};
 }
+
+*/
 
 function loadUsers() {
     var storedUsers = localStorage.getItem("users");
@@ -149,12 +152,15 @@ $("#registerForm").submit(function(event) {
     $(this)[0].reset();
 });
 
+/*
 $("#loginForm").submit(function(event) {
     event.preventDefault();
     login();
 
     $(this)[0].reset();
 })
+
+*/
 
 $("#newDataForm").submit(function(event) {
     event.preventDefault();

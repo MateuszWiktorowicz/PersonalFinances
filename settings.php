@@ -1,3 +1,13 @@
+<?php 
+    session_start();
+
+    if (!isset($_SESSION['loggedIn']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,21 +32,21 @@
             </a>
             
             <div class="d-flex gap-3 p-3" id="navMainMenu">
-                <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
-                <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
-                <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
-                <div><a class="text-reset text-decoration-none logoutLink" href="#">Logout</a></div>
+                <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
+                <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
+                <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
+                <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
+                <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
             </div>
             <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
                 <div class="navbar-nav">
-                    <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
-                    <div><a class="text-reset text-decoration-none logoutLink" href="#">Logout</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
                 </div>
             </div>
         </div>

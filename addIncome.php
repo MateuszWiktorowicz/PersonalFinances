@@ -1,3 +1,13 @@
+<?php 
+    session_start();
+
+    if (!isset($_SESSION['loggedIn']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,55 +32,49 @@
             </a>
             
             <div class="d-flex gap-3 p-3" id="navMainMenu">
-                <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
-                <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
-                <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
-                <div><a class="text-reset text-decoration-none logoutLink" href="#">Logout</a></div>
+                <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
+                <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
+                <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
+                <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
+                <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
             </div>
             <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
                 <div class="navbar-nav">
-                    <div><a class="text-reset text-decoration-none" href="./addIncome.html">Add Income</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./addExpense.html">Add Expense</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./balance.html">Balance</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./settings.html">Settings</a></div>
-                    <div><a class="text-reset text-decoration-none logoutLink" href="#">Logout</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
+                    <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
                 </div>
             </div>
         </div>
     </nav>
     <main>
         <div class="d-flex flex-column m-5 p-5 bg-white opacity-100 rounded">
-            <form class="m-5" id="addExpenseForm">
+            <form class="m-5" id="addIncomeForm">
                 <div class="mb-3">
-                  <label for="expenseAmountInput" class="form-label">Expense amount:</label>
-                  <input type="number" step="0.01" min="0" class="form-control" id="expenseAmountInput" aria-describedby="expenseAmountInputText" required>
-                  <div id="expenseAmountInputText" class="form-text">Enter the number to two decimal places.</div>
+                  <label for="incomeAmountInput" class="form-label">Income amount:</label>
+                  <input type="number" step="0.01" min="0" class="form-control" id="incomeAmountInput" aria-describedby="incomeAmountInputContainer" required>
+                  <div id="incomeAmountInputContainer" class="form-text">Enter the number to two decimal places.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="expensePaymentMethod" class="form-label">Payment method</label>
-                    <div class="expensePaymentMethods" id="expensePaymentMethod">
-                    </div>
+                    <label for="incomeDate" class="form-label">Income date:</label>
+                    <input type="text" class="datepicker form-control" id="incomeDate" required>
                 </div>
                 <div class="mb-3">
-                    <label for="expenseDate" class="form-label">Expense date:</label>
-                    <input type="text" class="datepicker form-control" id="expenseDate" required>
-                </div>
-                <div class="mb-3">
-                    <label for="expenseCategory" class="form-label">Expense category:</label>
-                    <select class="form-select expenseCategories" aria-label="Expense Category:" id="expenseCategory" required>
-                        <option value="" disabled selected hidden>Select an expense category</option>
-                     
+                    <label for="incomeCategory" class="form-label">Income category:</label>
+                    <select class="form-select incomeCategories" aria-label="Income Category:" id="incomeCategory" required>
+                        <option value="" disabled selected hidden>Select an income category</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                  <label for="expenseTextArea" class="form-label">Comment:</label>
-                  <textarea class="form-control" id="expenseTextArea" rows="3"></textarea>
+                  <label for="incomeTextArea" class="form-label">Comment:</label>
+                  <textarea class="form-control" id="incomeTextArea" rows="3"></textarea>
                 </div>
                 <div class="mb-3 d-flex gap-2 formButtons">
-                    <button type="submit" class="btn btn-success" id="addExpenseSubmit">Add Expense</button>
+                    <button type="submit" class="btn btn-success" id="addIncomeSubmit">Add Income</button>
                     <button type="reset" class="btn btn-danger">Cancel</button>
                 </div>
                 

@@ -70,11 +70,11 @@
                     <form id="loginForm" action="login.php" method="post">
                         <div class="mb-3">
                           <label for="loginInputEmail" class="form-label">Email address</label>
-                          <input type="email" name="login" class="form-control" id="loginInputEmail" required>
+                          <input type="email" name="loginInputEmail" class="form-control" id="loginInputEmail" required>
                         </div>
                         <div class="mb-3">
                           <label for="loginInputPassword" class="form-label">Password</label>
-                          <input type="password" name="password" class="form-control" id="loginInputPassword" required>
+                          <input type="password" name="loginInputPassword" class="form-control" id="loginInputPassword" required>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="loginSubmit">Submit</button>
@@ -124,16 +124,7 @@
     </main>
     <footer class="text-center bg-white">
         <div class="container">github.com/MateuszWiktorowicz</div>
-    </footer>
-
-    <?php
-	if(isset($_SESSION['loginError'])) {
-    echo $_SESSION['loginError'];
-    unset($_SESSION['loginError']);
-  } 
-  
-?>
-    
+    </footer>    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="./userManager.js"></script>

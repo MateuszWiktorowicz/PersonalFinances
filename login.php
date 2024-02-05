@@ -36,14 +36,15 @@
                     $_SESSION['idLoggedInUser'] = $row['userId'];
                     $_SESSION['name'] = $row['name']; 
 
-                    $result->free_result();
-				    header('Location: mainMenu.php');
+                    $result -> free_result();
+                    echo json_encode(['status' => 'success', 'redirect' => 'mainMenu.php']);
                 } else {
                     $_SESSION['loginError'] = '<div style="color:red">Incorrect email or password!</div>';
 
-                    header('Location: index.php');
+                    echo json_encode(['status' => 'failed']);
                 }
             }
+
             $connection -> close();
     }
 

@@ -3,7 +3,9 @@
 
     $name = $_POST['registerInputName'];
     $email = $_POST['registerInputEmail'];
-    $password1 = $_POST['registerInputPassword'];
+    $password = $_POST['registerInputPassword'];
+
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     require_once "connect.php";
 
@@ -24,7 +26,7 @@
             if ($theSameEmailInDataBase > 0) {
                 echo json_encode(['status' => 'fail']);
             } else {
-                if ($connection -> query("INSERT INTO users VALUES(NULL, '$name', '$email', '$password1')")) {
+                if ($connection -> query("INSERT INTO users VALUES(NULL, '$name', '$email', '$passwordHash')")) {
                     echo json_encode(['status' => 'success']);
                 } else {
                     throw new Exception ($connection -> error);

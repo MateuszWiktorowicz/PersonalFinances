@@ -80,6 +80,7 @@ $(document).ready(function () {
                     setTimeout(function() {
                         $(".successRegister").remove();;
                     }, 4000);
+                    $("#registerForm")[0].reset();
 
                 } else {
 

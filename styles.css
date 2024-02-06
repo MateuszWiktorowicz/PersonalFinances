@@ -18,6 +18,10 @@ main {
     background-color: white;
 }
 
+.failRegister {
+    color: red;
+}
+
 @media (max-width: 768px) {
     #navMainPageButtons .btn, #navMainMenu div{
         display: none;

@@ -1,3 +1,13 @@
+function isAlphanumeric(input) {
+    var alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    return alphanumericRegex.test(input);
+}
+
+function passwordCharactersValidation(input) {
+    var passwordRegex = /^[a-zA-Z0-9!-$-%]+$/;
+    return passwordRegex.test(input);
+}
+
 $(document).ready(function () {
     $('#loginForm').submit(function (event) {
         event.preventDefault();
@@ -31,12 +41,34 @@ $(document).ready(function () {
 $(document).ready(function () { 
     $("#registerForm").submit(function(event) {
         event.preventDefault();
+        $(".failRegister").remove();
         
         var name = $("#registerInputName").val();
         var email = $("#registerInputEmail").val();
         var password1 = $("#registerInputPassword").val();
         var password2 = $("#confirmRegisterInputPassword").val();
-    
+
+        if (!isAlphanumeric(name)) {
+            $("#registerLabel .modal-footer").append('<div class="failRegister">Name can contains letters and numbers only!</div>');
+            return;
+        }
+        
+        if (!passwordCharactersValidation(password1)) {
+            $("#registerLabel .modal-footer").append('<div class="failRegister">Passwords can contains just letters, numbers and special characters: [!, $, %]</div>');
+            return;
+        }
+        
+        if (password1 !== password2) {
+            $("#registerLabel .modal-footer").append('<div class="failRegister">Passwords are not the same!!</div>');
+            return;
+        }
+
+        if (password1.length < 8 || password1.length > 20) {
+            $("#registerLabel .modal-footer").append('<div class="failRegister">Passwords have to contains 8-20 characters!</div>');
+            return;
+        }
+
+
         $.ajax({
             type: "post",
             url: "register.php",

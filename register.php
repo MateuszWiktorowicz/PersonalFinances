@@ -1,46 +1,43 @@
 <?php 
     session_start();
 
-    if(isset($_POST['registerInputEmail'])) {
-        
-        $registerValidationCorrect = true;
+    $name = $_POST['registerInputName'];
+    $email = $_POST['registerInputEmail'];
+    $password1 = $_POST['registerInputPassword'];
 
-        $nick = $_POST['registerInputName'];
-        $email = $_POST['registerInputEmail'];
-        $password = $_POST['registerInputPassword']
-        $password1 = $_POST['registerInputPassword']
+    require_once "connect.php";
 
-        if (((strlen($nick) < 3) || (strlen($nick) > 20))) {
-            $registerValidationCorrect = false;
-            $_SESSION['errorNick'] = "Nick have to contain from 3 to 20 characters!";
+    mysqli_report(MYSQLI_REPORT_STRICT);
+
+    try {
+        $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+        if ($connection -> errno != 0) {
+            throw new Exception(mysqli_connect_errno());
+        } else {
+            $result = $connection -> query("SELECT * FROM users WHERE email = '$email'");
+
+            if (!$result) throw new Exception ($connection -> error);
+
+            $theSameEmailInDataBase = $result -> num_rows;
+
+            if ($theSameEmailInDataBase > 0) {
+                echo "juz jest ten amil";
+            } else {
+                if ($connection -> query("INSERT INTO users VALUES(NULL, '$name', '$email', '$password1')")) {
+                    header('Location: index.php');
+                } else {
+                    throw new Exception ($connection -> error);
+                }
+            }
         }
+        $connection -> close();
 
-        if (!ctype_alnum($nick)) {
-            $registerValidationCorrect = false;
-            $_SESSION['errorNick'] = "Nick have to contain letters and numbers only!";
-        }
-
-        $emailSafety = filter_var($email, FILTER_SANITIZE_EMAIL);
-
-        if (!filter_var($emailSafety, FILTER_VALIDATE_EMAIL) || ($emailSafety !== $email)) {
-            $registerValidationCorrect = false;
-            $_SESSION['errorEmail'] = "Invalid email";
-        }
-
-        if (strlen($password) < 3 || strlen($password > 20)) {
-            $registerValidationCorrect = false;
-            $_SESSION(['errorPassword']) = "Password have to contain from 8 to 20 characters!"
-        }
-
-        if ($password != $password1) {
-            $registerValidationCorrect = false;
-            $_SESSION(['errorPassword']) = "Passwords are not the same!"
-        }
-
-
-
-
+    } catch (Exception $e) {
+        echo "Temporary database fail. Please try register after few minutes. Thank You!".$e;
     }
 
 
+
 ?>
+    

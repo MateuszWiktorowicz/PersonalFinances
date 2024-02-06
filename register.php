@@ -22,14 +22,15 @@
             $theSameEmailInDataBase = $result -> num_rows;
 
             if ($theSameEmailInDataBase > 0) {
-                echo "juz jest ten amil";
+                echo json_encode(['status' => 'fail']);
             } else {
                 if ($connection -> query("INSERT INTO users VALUES(NULL, '$name', '$email', '$password1')")) {
-                    header('Location: index.php');
+                    echo json_encode(['status' => 'success']);
                 } else {
                     throw new Exception ($connection -> error);
                 }
             }
+            $result -> free_result();
         }
         $connection -> close();
 

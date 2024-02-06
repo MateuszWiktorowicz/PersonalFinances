@@ -94,22 +94,40 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="registerForm">
+                    <form id="registerForm" action="register.php" method="post">
                         <div class="mb-3">
                             <label for="registerInputName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="registerInputName" required>
+                            <input type="text" class="form-control" name="registerInputName" id="registerInputName" required>
+                            <?php 
+                                if(isset($_SESSION['errorName'])) {
+                                    echo '<div class="error">'.$_SESSION['errorName'].'</div>';
+                                    unset($_SESSION['errorName']);
+                                }
+                            ?>
                           </div>
                         <div class="mb-3">
                           <label for="registerInputEmail" class="form-label">Email address</label>
-                          <input type="email" class="form-control registerEmail" id="registerInputEmail" required>
+                          <input type="email" class="form-control registerEmail" name="registerInputEmail" id="registerInputEmail" required>
+                          <?php 
+                                if(isset($_SESSION['errorEmail'])) {
+                                    echo '<div class="error">'.$_SESSION['errorEmail'].'</div>';
+                                    unset($_SESSION['errorEmail']);
+                                }
+                            ?>
                         </div>
                         <div class="mb-3">
                           <label for="registerInputPassword" class="form-label">Password</label>
-                          <input type="password" class="form-control" id="registerInputPassword" required>
+                          <input type="password" class="form-control" name="registerInputPassword"  id="registerInputPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="confirmRegisterInputPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control confirmPassword" id="confirmRegisterInputPassword" required>
+                            <input type="password" class="form-control confirmPassword" name="confirmRegisterInputPassword" id="confirmRegisterInputPassword" required>
+                            <?php 
+                                if(isset($_SESSION['errorPassword'])) {
+                                    echo '<div class="error">'.$_SESSION['errorPassword'].'</div>';
+                                    unset($_SESSION['errorPassword']);
+                                }
+                            ?>
                         </div>
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="registerSubmit">Submit</button>

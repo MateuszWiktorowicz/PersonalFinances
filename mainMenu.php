@@ -24,7 +24,7 @@
 <body class="d-flex flex-column">
     <nav class="navbar bg-body-tertiary">
         <div class="container-sm d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="./mainMenu.html">
+            <a class="navbar-brand" href="./mainMenu.php">
                 <img src="./images/piggyBank.png" alt="piggy-bank-image" width="50" height="50">
                 PersonalFinances
             </a>

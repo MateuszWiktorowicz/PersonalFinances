@@ -1,6 +1,7 @@
 <?php 
     session_start();
 
+    if (isset($_POST['registerInputEmail'])) {
     $name = $_POST['registerInputName'];
     $email = $_POST['registerInputEmail'];
     $password = $_POST['registerInputPassword'];
@@ -41,6 +42,8 @@
     }
 
 
-
+    } else {
+        header('Location: index.php');
+    }
 ?>
     

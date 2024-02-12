@@ -23,26 +23,28 @@
         $password = htmlentities($password, ENT_QUOTES, "UTF-8");
 
         if ($result = $connection -> query (
-            sprintf ("SELECT * FROM users WHERE email = '%s' AND password = '%s'" ,
-            mysqli_real_escape_string($connection, $login),
-            mysqli_real_escape_string($connection, $password)))) {
+            sprintf ("SELECT * FROM users WHERE email = '%s'",
+            mysqli_real_escape_string($connection, $login)))) {
 
                 $usersNumber = $result -> num_rows;
                 if ($usersNumber > 0) {
-
+                    $row = $result -> fetch_assoc();
+                    if(password_verify($password, $row['password'])) {
                     $_SESSION['loggedIn'] = true;
 
-                    $row = $result -> fetch_assoc();
+                    
                     $_SESSION['idLoggedInUser'] = $row['userId'];
                     $_SESSION['name'] = $row['name']; 
 
-                    $result -> free_result();
+                    
                     echo json_encode(['status' => 'success', 'redirect' => 'mainMenu.php']);
                 } else {
                     $_SESSION['loginError'] = '<div style="color:red">Incorrect email or password!</div>';
 
                     echo json_encode(['status' => 'failed']);
                 }
+            }
+            $result -> free_result();
             }
 
             $connection -> close();

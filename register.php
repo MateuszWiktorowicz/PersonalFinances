@@ -8,42 +8,45 @@
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    require_once "connect.php";
-
-    mysqli_report(MYSQLI_REPORT_STRICT);
+    require_once 'database.php';
 
     try {
-        $connection = new mysqli($host, $db_user, $db_password, $db_name);
-
-        if ($connection -> errno != 0) {
-            throw new Exception(mysqli_connect_errno());
+    
+        $query = $db->prepare("SELECT * FROM users WHERE email = :email");
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        $query->execute();
+    
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+    
+        if ($row) {
+            echo json_encode(['status' => 'fail']);
         } else {
-            $result = $connection -> query("SELECT * FROM users WHERE email = '$email'");
-
-            if (!$result) throw new Exception ($connection -> error);
-
-            $theSameEmailInDataBase = $result -> num_rows;
-
-            if ($theSameEmailInDataBase > 0) {
-                echo json_encode(['status' => 'fail']);
+            $query = $db->prepare("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)");
+            $query->bindParam(':name', $name, PDO::PARAM_STR);
+            $query->bindParam(':email', $email, PDO::PARAM_STR);
+            $query->bindParam(':password', $passwordHash, PDO::PARAM_STR);
+    
+            if ($query->execute()) {
+                echo json_encode(['status' => 'success']);
             } else {
-                if ($connection -> query("INSERT INTO users VALUES(NULL, '$name', '$email', '$passwordHash')")) {
-                    echo json_encode(['status' => 'success']);
-                } else {
-                    throw new Exception ($connection -> error);
-                }
+                echo json_encode(['status' => 'fail']);
             }
-            $result -> free_result();
         }
-        $connection -> close();
-
-    } catch (Exception $e) {
-        echo "Temporary database fail. Please try register after few minutes. Thank You!".$e;
+    
+    } catch (PDOException $error) {
+    
     }
+
+   
 
 
     } else {
         header('Location: index.php');
     }
-?>
+
     
+
+
+
+
+?>

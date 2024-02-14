@@ -345,5 +345,5 @@ $(document).ready(function() {
     $("#balancePeriod").trigger('change');
 });
 
-welcomeLoggedInUser();
+
 loadOperations();

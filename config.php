@@ -4,7 +4,7 @@ return [
     'host' => 'localhost',
     'user' =>'root',
     'password' => '',
-    'database' => 'personalfinances'
+    'database' => 'personal_finances'
 ];
 
 

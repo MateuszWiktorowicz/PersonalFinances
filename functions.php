@@ -1,5 +1,6 @@
 <?php
     session_start();
+  
 
 function findUserByEmail($dataBase, $email) {
         try {
@@ -117,6 +118,20 @@ function findUserByEmail($dataBase, $email) {
             $query->execute();
 
             return $query->fetchAll(PDO:FETCH_ASSOC);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+        }
+    }
+
+
+    function findIdCategoryByName($db, $categoryName, $tableName) {
+        try {
+            $query = $db->prepare("SELECT id FROM $tableName WHERE name = :categoryName");
+            $query->bindParam(':categoryName', $categoryName, PDO::PARAM_STR);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            
+            return ($result) ? $result['id'] : NULL;
         } catch (PDOException $error) {
             echo $error->getMessage();
         }

@@ -19,6 +19,50 @@ function Expense(operationId, userId, amount, paymentMethod, date, category, com
 
 var operations = [];
 
+$(document).ready(function() {
+    $("#addIncomeForm").submit(function(event) {
+        event.preventDefault();
+
+         
+        var amount = $("#incomeAmountInput").val();
+        var date = $("#incomeDate").val();
+        var categoryName = $("#incomeCategory").val();
+        var comment = $("#incomeTextArea").val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'income.php',
+        data: {amount: amount, date: date, categoryName: categoryName, comment: comment},
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $("#addIncomeForm")[0].reset();
+                $("#addIncomeForm .formButtons").after('<div class="d-flex flex-row-reverse success" style="color: green;">Income added!</div>');
+                    setTimeout(function() {
+                        $(".success").remove();
+                    }, 3000);
+            } else {
+                $("#addIncomeForm .formButtons").after('<div class="d-flex flex-row-reverse fail" style="color: red;">Something gone wrong. Try again later...</div>');
+                    setTimeout(function() {
+                        $(".fail").remove();;
+                    }, 3000);
+            }
+        },  
+        error: function (xhr, status, error) {
+            console.error('Error in AJAX request:', status, error);
+            console.log(xhr.responseText);
+            alert('An error occurred. Please try again.');
+        }     
+        
+    });
+
+    })
+
+})
+
+
+
+/*
 
 
 function addIncome() {
@@ -347,3 +391,5 @@ $(document).ready(function() {
 
 
 loadOperations();
+
+*/

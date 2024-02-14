@@ -1,3 +1,59 @@
+function populateSelectOptions(selectId, optionValues) {
+    const $selectElement = $("." + selectId);
+
+    if ($selectElement.length) {
+        $.each(optionValues, function(index, option) {
+            $selectElement.append($("<option>", {
+                value: option.name,
+                text: option.name
+            }));
+        });
+    }
+}
+function populateRadioOptions(containerId, optionValues) {
+    const $container = $("." + containerId);
+
+    if ($container.length) {
+        $.each(optionValues, function(index, option) {
+            const $radioDiv = $("<div class='form-check form-check-inline'>");
+            const $radioInput = $("<input>", {
+                class: "form-check-input",
+                type: "radio",
+                name: "paymentMethod",
+                id: option.name,
+                value: option.name,
+                required: true
+            });
+            const $radioLabel = $("<label>", {
+                class: "form-check-label",
+                for: option.name,
+                text: option.name
+            });
+
+            $container.append($radioDiv.append($radioInput, $radioLabel));
+        });
+    }
+}
+
+function loadUserSettings(settingsArray) {
+    var expensesCategories = settingsArray[0];
+    var incomesCategories = settingsArray[1];
+    var paymentMethods = settingsArray[2];
+
+    populateSelectOptions("expenseCategories", expensesCategories);
+    populateSelectOptions("incomeCategories", incomesCategories);
+    populateRadioOptions("expensePaymentMethods", paymentMethods);
+}
+
+
+loadUserSettings(JSON.parse(sessionStorage.getItem('userSettings')));
+
+
+
+
+
+
+
 /*
 
 function handleDeleteCategoryButtonClick(event, category) {

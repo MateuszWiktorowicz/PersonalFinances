@@ -11,3 +11,4 @@ try {
     echo $error->getMessage();
     exit('DatabaseError');
 }
+

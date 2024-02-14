@@ -26,7 +26,7 @@
 <body class="d-flex flex-column">
     <nav class="navbar bg-body-tertiary">
         <div class="container-sm d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="./mainMenu.html">
+            <a class="navbar-brand" href="./mainMenu.php">
                 <img src="./images/piggyBank.png" alt="piggy-bank-image" width="50" height="50">
                 PersonalFinances
             </a>
@@ -53,25 +53,25 @@
     </nav>
     <main>
         <div class="d-flex flex-column m-5 p-5 bg-white opacity-100 rounded">
-            <form class="m-5" id="addIncomeForm">
+            <form class="m-5" id="addIncomeForm" action="income.php" method="post">
                 <div class="mb-3">
                   <label for="incomeAmountInput" class="form-label">Income amount:</label>
-                  <input type="number" step="0.01" min="0" class="form-control" id="incomeAmountInput" aria-describedby="incomeAmountInputContainer" required>
+                  <input type="number" step="0.01" min="0" class="form-control" name="incomeAmountInput" id="incomeAmountInput" aria-describedby="incomeAmountInputContainer" required>
                   <div id="incomeAmountInputContainer" class="form-text">Enter the number to two decimal places.</div>
                 </div>
                 <div class="mb-3">
                     <label for="incomeDate" class="form-label">Income date:</label>
-                    <input type="text" class="datepicker form-control" id="incomeDate" required>
+                    <input type="text" class="datepicker form-control" name="incomeDate" id="incomeDate" required>
                 </div>
                 <div class="mb-3">
                     <label for="incomeCategory" class="form-label">Income category:</label>
-                    <select class="form-select incomeCategories" aria-label="Income Category:" id="incomeCategory" required>
+                    <select class="form-select incomeCategories" aria-label="Income Category:" name="incomeCategory" id="incomeCategory" required>
                         <option value="" disabled selected hidden>Select an income category</option>
                     </select>
                 </div>
                 <div class="mb-3">
                   <label for="incomeTextArea" class="form-label">Comment:</label>
-                  <textarea class="form-control" id="incomeTextArea" rows="3"></textarea>
+                  <textarea class="form-control" name="incomeTextArea" id="incomeTextArea" rows="3"></textarea>
                 </div>
                 <div class="mb-3 d-flex gap-2 formButtons">
                     <button type="submit" class="btn btn-success" id="addIncomeSubmit">Add Income</button>

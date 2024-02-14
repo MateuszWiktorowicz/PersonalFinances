@@ -1,4 +1,5 @@
 <?php
+    session_start();
 
 function findUserByEmail($dataBase, $email) {
         try {
@@ -60,26 +61,35 @@ function findUserByEmail($dataBase, $email) {
         assignDefaultCategoiresNames($dataBase, $userId, 'payment_methods_assigned_to_users', $paymentMethods);
     }
 
-    function loadUserSettings($dataBase, $userId) {
+    function getUserAssignedCategoriesFromTable($dataBase, $tableName) {
 
         try {
 
-            $query = $dataBase->prepare("SELECT categories.name, categories.type FROM categories, users_settings WHERE categories.categoryId = users_settings.categoryId AND users_settings.userId = :userId");
-            $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $query = $dataBase->prepare("
+            SELECT 
+                name 
+            FROM 
+                $tableName
+            WHERE 
+                user_id = :userId");
+            $query->bindParam(':userId', $_SESSION['idLoggedInUser'], PDO::PARAM_INT);
             $query->execute();
 
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return $result;
-            } else {
-                return [];
-            }
-
+            return ($result) ? $result : [];
         } catch (PDOException $error) {
             echo $error->getMessage();
         }
 
+    }
+
+    function loadUserSettings($db) {
+        $userAssignedIncomesName = getUserAssignedCategoriesFromTable($db, 'incomes_category_assigned_to_users');
+        $userAssignedExpensesName = getUserAssignedCategoriesFromTable($db, 'expenses_category_assigned_to_users');
+        $userAssignedPaymentMethods = getUserAssignedCategoriesFromTable($db, 'payment_methods_assigned_to_users');
+
+        return [$userAssignedIncomesName, $userAssignedExpensesName, $userAssignedPaymentMethods];
     }
 
     function getIncomesBalance($startDate, $endDate, $db) {

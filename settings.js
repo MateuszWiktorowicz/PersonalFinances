@@ -1,5 +1,5 @@
-
 /*
+
 function handleDeleteCategoryButtonClick(event, category) {
     var parentContainer = $(event.target).closest('.categoriesSettings');
     var categoryIndex = parentContainer.index();

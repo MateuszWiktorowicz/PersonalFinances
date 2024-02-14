@@ -1,3 +1,5 @@
+
+
 function isAlphanumeric(input) {
     var alphanumericRegex = /^[a-zA-Z0-9]+$/;
     return alphanumericRegex.test(input);
@@ -23,6 +25,10 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status === 'success') {
                     window.location.href = response.redirect;
+                    var idLoggedInUser = response.idLoggedInUser;
+                    var userSettings = Object.values(response.userSettings);
+                    alert(userSettings);
+                    alert(idLoggedInUser);
                 } else {
                     $("#loginLabel .modal-footer").append('<div class="failLogin" style="color: red;">Login failed. Please check your credentials.</div>');
                     setTimeout(function() {

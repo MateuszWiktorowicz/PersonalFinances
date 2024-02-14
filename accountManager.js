@@ -60,6 +60,50 @@ $(document).ready(function() {
 
 })
 
+$(document).ready(function() {
+    $("#addExpenseForm").submit(function(event) {
+        event.preventDefault();
+
+         
+        var amount = $("#expenseAmountInput").val();
+        var date = $("#expenseDate").val();
+        var categoryName = $("#expenseCategory").val();
+        var paymentMethod = $("input[name='paymentMethod']:checked").val();
+        var comment = $("#expenseTextArea").val();
+
+        console.log(paymentMethod + "    <----");
+
+    $.ajax({
+        type: 'POST',
+        url: 'expense.php',
+        data: {amount: amount, date: date, categoryName: categoryName, paymentMethod: paymentMethod, comment: comment},
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $("#addExpenseForm")[0].reset();
+                $("#addExpenseForm .formButtons").after('<div class="d-flex flex-row-reverse success" style="color: green;">Expense added!</div>');
+                    setTimeout(function() {
+                        $(".success").remove();
+                    }, 3000);
+            } else {
+                $("#addExpenseForm .formButtons").after('<div class="d-flex flex-row-reverse fail" style="color: red;">Something gone wrong. Try again later...</div>');
+                    setTimeout(function() {
+                        $(".fail").remove();;
+                    }, 3000);
+            }
+        },  
+        error: function (xhr, status, error) {
+            console.error('Error in AJAX request:', status, error);
+            console.log(xhr.responseText);
+            alert('An error occurred. Please try again.');
+        }     
+        
+    });
+
+    })
+
+})
+
 
 
 /*

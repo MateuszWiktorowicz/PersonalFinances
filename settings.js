@@ -15,7 +15,7 @@ function populateRadioOptions(containerId, optionValues) {
 
     if ($container.length) {
         $.each(optionValues, function(index, option) {
-            const $radioDiv = $("<div class='form-check form-check-inline'>");
+            const $radioDiv = $("<div class='form-check form-check-inline paymentMethod'>");
             const $radioInput = $("<input>", {
                 class: "form-check-input",
                 type: "radio",

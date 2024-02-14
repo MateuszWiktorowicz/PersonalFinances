@@ -89,7 +89,7 @@ function findUserByEmail($dataBase, $email) {
         $userAssignedExpensesName = getUserAssignedCategoriesFromTable($db, 'expenses_category_assigned_to_users');
         $userAssignedPaymentMethods = getUserAssignedCategoriesFromTable($db, 'payment_methods_assigned_to_users');
 
-        return [$userAssignedIncomesName, $userAssignedExpensesName, $userAssignedPaymentMethods];
+        return [$userAssignedExpensesName, $userAssignedIncomesName, $userAssignedPaymentMethods];
     }
 
     function getIncomesBalance($startDate, $endDate, $db) {

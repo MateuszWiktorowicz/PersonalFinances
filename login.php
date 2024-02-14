@@ -1,11 +1,9 @@
 <?php 
-
     if ((!isset($_POST['login'])) || (!isset($_POST['password'])))
 	{
 		header('Location: index.php');
 		exit();
 	}
-
     require_once "database.php";
     require_once "functions.php";
 
@@ -16,8 +14,6 @@
     $password = htmlentities($password, ENT_QUOTES, "UTF-8");
     
     try {
-        
-    
         $row = findUserByEmail($db, $login);
     
         if ($row) {
@@ -38,4 +34,3 @@
     } catch (PDOException $error) {
         echo json_encode(['status' => 'failed', 'error' => 'Database error']);
     }
-    ?>

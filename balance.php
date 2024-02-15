@@ -57,31 +57,35 @@
                 <div>Period</div>
                 <div class="mb-5" id="choosenBalancePeriod"></div>
             </div>
-            <div class="d-flex flex-row-reverse justify-content-between mb-3 p-3 bg-white opacity-100 rounded" id="periodContainer">
-                <div>
-                    <label for="balancePeriod" class="form-label">Choose balance period:</label>
-                    <select class="form-select" aria-label="Default select example" id="balancePeriod">
-                        <option value="current month"selected>Current month</option>
-                        <option value="last month">Last month</option>
-                        <option value="current year">Current Year</option>
-                        <option value="Custom">Custom</option>
-                      </select>
+            <form id="balancePeriodForm"  action="balanceFunctions.php" method="post">
+                <div class="d-flex flex-row-reverse justify-content-between mb-3 p-3 bg-white opacity-100 rounded" id="periodContainer">
+                    <div>
+                        <label for="balancePeriod" class="form-label">Choose balance period:</label>
+                        <select class="form-select" aria-label="Default select example" id="balancePeriod">
+                            <option value="current month"selected>Current month</option>
+                            <option value="last month">Last month</option>
+                            <option value="current year">Current Year</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-between mb-5 p-3 bg-white opacity-100 rounded">
-                <div class="d-flex flex-column">
+            </form>
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
                     <div id="expensesTotal">Expenses:</div>
+                    <div class="text-center mb-2" id="expensesList"></div>
                 </div>
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
                     <div id="balanceQuote">Balance</div>
                 </div>
-                <div class="d-flex flex-column">
-                    <div id="incomesTotal">Incomes:</div>     
+                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
+                    <div id="incomesTotal">Incomes:</div>
+                    <div class="text-center" id="incomesList"></div>       
                 </div>
             </div>
             <div class="d-flex flex-column gap-3 align-items-center flex-md-row justify-content-between mb-3 p-3 bg-white opacity-100 rounded">
                 <div class="col-4 d-flex flex-column">
-                    <div class="text-center mb-2" id="expensesList">Expenses List:</div>
+                    
                 </div>
                 <div class="col-4 d-flex flex-column">
                     <div class="text-center">
@@ -92,7 +96,7 @@
                     </div>
                 </div>
                 <div class="col-4 d-flex flex-column mb-2">
-                    <div class="text-center" id="incomesList">Incomes List:</div>     
+                    
                 </div>
             </div>
         </div>

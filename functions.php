@@ -136,3 +136,63 @@ function findUserByEmail($dataBase, $email) {
             echo $error->getMessage();
         }
     }
+
+    function getIncomesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db) {
+        try {
+            $query = $db->prepare("
+            SELECT 
+                c.name,
+                SUM(i.amount) AS 'Value'
+            FROM 
+                incomes as i
+                INNER JOIN incomes_category_assigned_to_users as c ON c.id = i.income_category_assigned_to_user_id
+            WHERE 
+                i.user_id = :loggedInUserId
+                AND
+                date_of_income BETWEEN :startDate AND :endDate
+            GROUP BY 
+                i.income_category_assigned_to_user_id
+            ORDER BY 
+                SUM(i.amount) DESC
+            ");
+
+            $query->bindParam(':loggedInUserId', $_SESSION['idLoggedInUser'], PDO::PARAM_INT);
+            $query->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+            $query->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+        }
+    }
+
+    function getExpensesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db) {
+        try {
+            $query = $db->prepare("
+            SELECT 
+                c.name,
+                SUM(e.amount) AS 'Value'
+            FROM 
+                expenses as e
+                INNER JOIN expenses_category_assigned_to_users as c ON c.id = e.expense_category_assigned_to_user_id
+            WHERE 
+                e.user_id = :loggedInUserId
+                AND
+                date_of_expense BETWEEN :startDate AND :endDate
+            GROUP BY 
+                e.expense_category_assigned_to_user_id
+            ORDER BY 
+                SUM(e.amount) DESC
+            ");
+
+            $query->bindParam(':loggedInUserId', $_SESSION['idLoggedInUser'], PDO::PARAM_INT);
+            $query->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+            $query->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+        }
+    }

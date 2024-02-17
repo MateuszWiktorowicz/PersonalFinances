@@ -14,7 +14,10 @@
     try {
         $incomesBalance = getIncomesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db);
         $expensesBalance = getExpensesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db);
-        echo json_encode(['status' => 'success', 'balanceByCategoriesFromPeriod' => [$incomesBalance, $expensesBalance]]);
+        $incomesOperations = getIncomesOperationsFromPeriod($startDate, $endDate, $db);
+        $expensesOperations = getExpensesOperationsFromPeriod($startDate, $endDate, $db);
+
+        echo json_encode(['status' => 'success', 'balanceByCategoriesFromPeriod' => [$incomesBalance, $expensesBalance], 'accountOperationsFromPeriod' => [$incomesOperations, $expensesOperations]]);
     } catch (PDOException $error) {
         echo json_encode(['status' => 'error', 'message' => $error->getMessage()]);
     }

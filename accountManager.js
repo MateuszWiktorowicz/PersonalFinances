@@ -132,9 +132,10 @@ $(document).ready(function() {
             dataType: 'json',
             success: function (response) {
                 if (response.status === 'success') {
-                    sessionStorage.setItem('incomes', JSON.stringify(response.balanceByCategoriesFromPeriod));
                     var balanceByCategoriesFromPeriod = response.balanceByCategoriesFromPeriod;
+                    var accountOperationsFromPeriod = response.accountOperationsFromPeriod;
                     showBalance(startDate, endDate, balanceByCategoriesFromPeriod);
+                    displayAccountOperationsFromPeriod(accountOperationsFromPeriod);
                 } else {
                    
                 }
@@ -192,12 +193,12 @@ function getStartAndEndDateLastMonthInArray() {
     return [beginOfMonth, endOfMonth];
 }
 
-function showBalance(startDate, endDate, accountOperationsArrayFromPeriod) {
+function showBalance(startDate, endDate, balanceByCategoriesFromPeriod) {
     lastSearchDataRemove();
     $("#choosenBalancePeriod").text(startDate + " - " + endDate);
    
-    countBalanceFromPeriod(accountOperationsArrayFromPeriod);
-    displayAmountsGroupedByCategoriesNames(accountOperationsArrayFromPeriod);
+    countBalanceFromPeriod(balanceByCategoriesFromPeriod);
+    displayAmountsGroupedByCategoriesNames(balanceByCategoriesFromPeriod);
 
     drawCharts(startDate, endDate, Income);
     drawCharts(startDate, endDate, Expense);
@@ -229,12 +230,12 @@ function showBalance(startDate, endDate, accountOperationsArrayFromPeriod) {
     }) 
 }
 
-function countBalanceFromPeriod(accountOperationsArrayFromPeriod) {
+function countBalanceFromPeriod(balanceByCategoriesFromPeriod) {
     var incomesTotal = 0;
     var expensesTotal = 0;
 
-    var incomeOperations = accountOperationsArrayFromPeriod[0];
-    var expenseOperations = accountOperationsArrayFromPeriod[1];
+    var incomeOperations = balanceByCategoriesFromPeriod[0];
+    var expenseOperations = balanceByCategoriesFromPeriod[1];
 
     for (var i = 0; i < incomeOperations.length; i++) {
         incomesTotal += parseFloat(incomeOperations[i].Value);
@@ -268,18 +269,28 @@ function lastSearchDataRemove() {
     $(".customPeriod").remove();
 }
 
-function displayAmountsGroupedByCategoriesNames(accountOperationsArrayFromPeriod) {
-    var incomeOperations = accountOperationsArrayFromPeriod[0];
-    var expenseOperations = accountOperationsArrayFromPeriod[1];
+function displayAmountsGroupedByCategoriesNames(balanceByCategoriesFromPeriod) {
+    var incomeOperations = balanceByCategoriesFromPeriod[0];
+    var expenseOperations = balanceByCategoriesFromPeriod[1];
     
     for (var i = incomeOperations.length - 1; i >= 0; i--) {
-         
-        $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div>" + incomeOperations[i].name + "</div><div>" + incomeOperations[i].Value + "</div></div>");
+        $("#incomesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom><div>" + incomeOperations[i].name + "</div><div>" + incomeOperations[i].Value + "</div></div><div class='" + incomeOperations[i].name + "'></div></div>");
     } 
     for (var i = expenseOperations.length - 1; i >= 0; i--) { 
-        $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div>"  + expenseOperations[i].name + "</div><div>" + expenseOperations[i].Value + "</div></div>");
+        $("#expensesList").after("<div class='d-flex gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom><div>"  + expenseOperations[i].name + "</div><div>" + expenseOperations[i].Value + "</div></div><div class='" + expenseOperations[i].name + "'></div></div>");
+    }
+}
 
+function displayAccountOperationsFromPeriod(accountOperationsFromPeriod) {
+    var incomeOperations = accountOperationsFromPeriod[0];
+    var expenseOperations = accountOperationsFromPeriod[1];
 
+    for (var i = incomeOperations.length - 1; i >= 0; i--) {
+        $("." + incomeOperations[i].name).prepend("<div class='d-flex gap-1 border-bottom balanceScreen'><div>" + incomeOperations[i].date + "</div><div>" + incomeOperations[i].amount + "</div><div>" + incomeOperations[i].comment + "</div></div>");
+    } 
+    for (var i = expenseOperations.length - 1; i >= 0; i--) { 
+        console.log("." + expenseOperations[i].name);
+        $("." + expenseOperations[i].name).prepend("<div class='d-flex gap-1 border-bottom balanceScreen'><div>"  + expenseOperations[i].date + "</div><div>" + expenseOperations[i].amount + "</div><div>" + expenseOperations[i].comment + "</div></div>");
     }
 }
 

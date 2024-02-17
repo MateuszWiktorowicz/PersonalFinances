@@ -196,3 +196,59 @@ function findUserByEmail($dataBase, $email) {
             echo $error->getMessage();
         }
     }
+
+    function getIncomesOperationsFromPeriod($startDate, $endDate, $db,) {
+        try {
+            $query = $db->prepare("
+            SELECT 
+                c.name,
+                i.date_of_income AS date,
+                i.amount,
+                i.income_comment AS comment
+            FROM
+                incomes AS i
+                INNER JOIN incomes_category_assigned_to_users AS c ON i.income_category_assigned_to_user_id = c.id
+            WHERE
+                i.date_of_income BETWEEN :startDate AND :endDate
+                AND
+                i.user_id = :userId
+            ORDER BY i.date_of_income
+            ");
+            $query->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+            $query->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+            $query->bindParam(':userId', $_SESSION['idLoggedInUser'], PDO::PARAM_INT);
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+        }
+    }
+
+    function getExpensesOperationsFromPeriod($startDate, $endDate, $db,) {
+        try {
+            $query = $db->prepare("
+            SELECT 
+                c.name,
+                e.date_of_expense AS date,
+                e.amount,
+                e.expense_comment AS comment
+            FROM
+                expenses AS e
+            INNER JOIN expenses_category_assigned_to_users AS c ON e.expense_category_assigned_to_user_id = c.id
+            WHERE
+            e.date_of_expense BETWEEN :startDate AND :endDate
+                AND
+                e.user_id = :userId
+            ORDER BY e.date_of_expense
+            ");
+            $query->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+            $query->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+            $query->bindParam(':userId', $_SESSION['idLoggedInUser'], PDO::PARAM_INT);
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+        }
+    }

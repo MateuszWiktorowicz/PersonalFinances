@@ -1,27 +1,42 @@
 body {
     height: 100vh;
-    background-image: url("./images/coins-background.jpg");
+}
+main {
+    height: 80vh;
+    background-image: url("./images/background-image-clock-coins-in-jar.webp");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+nav {
+    min-height: 12.5vh;
+}
+
 .navbar-toggler {
     display: none;
 }
 
-main {
-    flex: 1;
+
+.buttonContainer {
+    min-height: 150px;
 }
 
-.opacity100 {
-    opacity: 100;
-    background-color: white;
+.menuOptions {
+    cursor: pointer;
+
+}
+.menuOptions:hover {
+    background-color: rgba(71, 121, 30, 0.75); 
+    color: white; 
+    border-radius: 15px; 
+
+
 }
 
-.failRegister {
-    color: red;
+footer {
+    height: 8.5vh;
 }
-
 @media (max-width: 768px) {
     #navMainPageButtons .btn, #navMainMenu div{
         display: none;

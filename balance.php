@@ -71,31 +71,26 @@
                 </div>
             </form>
             <div class="d-flex justify-content-between">
-                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
+                <div class="d-flex col-5 flex-column mb-5 p-3 bg-white opacity-100 rounded">
                     <div id="expensesTotal">Expenses:</div>
                     <div class="text-center mb-2" id="expensesList"></div>
                 </div>
-                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
+                <div class="d-flex col-2 flex-column mb-5 p-3 bg-white opacity-100 rounded">
                     <div id="balanceQuote">Balance</div>
                 </div>
-                <div class="d-flex flex-column mb-5 p-3 bg-white opacity-100 rounded">
+                <div class="d-flex col-5 flex-column mb-5 p-3 bg-white opacity-100 rounded">
                     <div id="incomesTotal">Incomes:</div>
                     <div class="text-center" id="incomesList"></div>       
                 </div>
             </div>
             <div class="d-flex flex-column gap-3 align-items-center flex-md-row justify-content-between mb-3 p-3 bg-white opacity-100 rounded">
-                <div class="col-4 d-flex flex-column">
-                    
+                <div class=" d-flex flex-column gap-2">
+                
+                <canvas id="Expenses" style="width:100%;max-width:700px; height: 250px;"></canvas>
                 </div>
-                <div class="col-4 d-flex flex-column">
-                    <div class="text-center">
-                        <canvas id="incomesChart" style="width:100%;max-width:700px"></canvas>
-                    </div>
-                    <div class="text-center">
-                        <canvas id="expensesChart" style="width:100%;max-width:700px"></canvas>
-                    </div>
-                </div>
-                <div class="col-4 d-flex flex-column mb-2">
+
+                <div class="d-flex flex-column">
+                <canvas id="Incomes" style="width:100%;max-width:700px; height: 250px;"></canvas>
                     
                 </div>
             </div>

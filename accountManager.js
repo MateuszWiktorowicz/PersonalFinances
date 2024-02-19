@@ -269,10 +269,12 @@ function displayAmountsGroupedByCategoriesNames(balanceByCategoriesFromPeriod) {
     var expenseOperations = balanceByCategoriesFromPeriod[1];
     
     for (var i = incomeOperations.length - 1; i >= 0; i--) {
-        $("#incomesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>" + incomeOperations[i].name + "</div><div>" + incomeOperations[i].Value + "</div></div><div class='" + incomeOperations[i].name + "'></div></div>");
+        var categoryClassName = incomeOperations[i].name.replace(/\s+/g, '_');
+        $("#incomesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>" + incomeOperations[i].name + "</div><div>" + incomeOperations[i].Value + "</div></div><div class='" + categoryClassName + "'></div></div>");
     } 
     for (var i = expenseOperations.length - 1; i >= 0; i--) { 
-        $("#expensesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>"  + expenseOperations[i].name + "</div><div>" + expenseOperations[i].Value + "</div></div><div class='" + expenseOperations[i].name + "'></div></div>");
+        var categoryClassName = expenseOperations[i].name.replace(/\s+/g, '_');
+        $("#expensesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>"  + expenseOperations[i].name + "</div><div>" + expenseOperations[i].Value + "</div></div><div class='" + categoryClassName + "'></div></div>");
     }
 }
 
@@ -281,13 +283,14 @@ function displayAccountOperationsFromPeriod(accountOperationsFromPeriod) {
     var expenseOperations = accountOperationsFromPeriod[1];
 
     for (var i = incomeOperations.length - 1; i >= 0; i--) {
-        $("." + incomeOperations[i].name).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>" + incomeOperations[i].date + "</div><div>" + incomeOperations[i].amount + "</div><div>" + incomeOperations[i].comment + "</div></div>");
+        var categoryClassName = incomeOperations[i].name.replace(/\s+/g, '_');
+        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>" + incomeOperations[i].date + "</div><div>" + incomeOperations[i].amount + "</div><div>" + incomeOperations[i].comment + "</div></div>");
     } 
     for (var i = expenseOperations.length - 1; i >= 0; i--) { 
-        $("." + expenseOperations[i].name).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>"  + expenseOperations[i].date + "</div><div>" + expenseOperations[i].amount + "</div><div>" + expenseOperations[i].comment + "</div></div>");
+        var categoryClassName = expenseOperations[i].name.replace(/\s+/g, '_');
+        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>"  + expenseOperations[i].date + "</div><div>" + expenseOperations[i].amount + "</div><div>" + expenseOperations[i].comment + "</div></div>");
     }
 }
-
 
 function generateRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -309,10 +312,7 @@ function generateArrayOfColors(lengthOfArray) {
 function drawCharts(balanceByCategoriesFromPeriod) {
     var incomeOperations = balanceByCategoriesFromPeriod[0];
     var expenseOperations = balanceByCategoriesFromPeriod[1];
-    console.log(incomeOperations);
 
-    
-    
     new Chart("Incomes", {
         type: "pie",
         data: {
@@ -329,7 +329,6 @@ function drawCharts(balanceByCategoriesFromPeriod) {
             }
         }
       });
-
 
 new Chart("Expenses", {
     type: "pie",

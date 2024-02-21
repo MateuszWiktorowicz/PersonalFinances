@@ -1,16 +1,18 @@
 <?php 
-/*
+   require_once 'database.php';
+   require_once 'functions.php';
+
     if (!isset($_SESSION['idLoggedInUser'])) {
         header('Location: index.php');
         exit();
     }
-*/
-    require_once 'database.php';
-    require_once 'functions.php';
+
+ 
 
     $startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];
 
+    
     try {
         $incomesBalance = getIncomesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db);
         $expensesBalance = getExpensesBalanceGroupedByCategoriesNameFromPeriod($startDate, $endDate, $db);
@@ -21,7 +23,6 @@
     } catch (PDOException $error) {
         echo json_encode(['status' => 'error', 'message' => $error->getMessage()]);
     }
-
 
 
 ?>

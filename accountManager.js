@@ -1,23 +1,3 @@
-function Income(operationId, userId, amount, date, category, comment) {
-    this.operationId = operationId;
-    this.userId = userId;
-    this.amount = amount;
-    this.date = date;
-    this.category = category;
-    this.comment = comment;
-}
-
-function Expense(operationId, userId, amount, paymentMethod, date, category, comment) {
-    this.operationId = operationId;
-    this.userId = userId;
-    this.amount = amount;
-    this.paymentMethod = paymentMethod;
-    this.date = date;
-    this.category = category;
-    this.comment = comment;
-}
-
-var operations = [];
 
 $(document).ready(function() {
     $("#addIncomeForm").submit(function(event) {
@@ -109,21 +89,36 @@ $(document).ready(function() {
 
         switch (selectedOption) {
             case "current month":
+                $(".customPeriod").remove();
                 dataRange = getStartAndEndDateCurrentMonthInArray();
+                getBalanceAndOperationsFromDataRange(dataRange);
                 break;     
             case "last month":
+                $(".customPeriod").remove();
                 dataRange = getStartAndEndDateLastMonthInArray();
+                getBalanceAndOperationsFromDataRange(dataRange);
                 break;         
             case "current year":
+                $(".customPeriod").remove();
                 dataRange = getStartAndEndDateCurrentYearInArray();
+                getBalanceAndOperationsFromDataRange(dataRange);
                 break;
             case "Custom":
-                //showCustomPeriodBalance();
+                getStardAndEndDateCustomPeriodInArray(function(customDataRange) {
+                    getBalanceAndOperationsFromDataRange(customDataRange);
+                });
                 break;
         }
+        })
+    
+    })
 
+    function getBalanceAndOperationsFromDataRange(dataRange) {
         var startDate = dataRange[0];
         var endDate = dataRange[1];
+
+        console.log(startDate);
+        console.log(endDate);
 
         $.ajax({
             type: 'POST',
@@ -143,15 +138,11 @@ $(document).ready(function() {
             },  
             error: function (xhr, status, error) {
                 console.error('Error in AJAX request:', status, error);
-                //console.log(xhr.responseText);
                 alert('An error occurred. Please try again.');
             }     
             
         });
-    
-        })
-    
-    })
+    }
 
 function getStartAndEndDateCurrentYearInArray() {
     var beginOfCurrentYear =  new Date().getFullYear() + "-01-01";
@@ -191,6 +182,7 @@ function getStartAndEndDateLastMonthInArray() {
     var beginOfMonth = year +  "-" + lastMonthStr + "-01";
     var endOfMonth = year + "-" + lastMonthStr + "-" + lastDayOfMonth;
 
+    console.log([beginOfMonth, endOfMonth])
     return [beginOfMonth, endOfMonth];
 }
 
@@ -203,25 +195,29 @@ function showBalance(startDate, endDate, balanceByCategoriesFromPeriod) {
 }
 
 
- function showCustomPeriodBalance() {
+ function getStardAndEndDateCustomPeriodInArray(callback) {
     displayDataPickersInCustomPeriodBalance();
+    insertNewChartsElements();
+    $(".balanceScreen").remove();
+    $("#choosenBalancePeriod").text('');
+    $("#customPeriodButton").click(function(event) {
+        event.preventDefault();
+        var startDate = String($("#startDate").val());
+        var endDate = String($("#endDate").val());
 
-    $("#customPeriodButton").click(function() {
-        $(".balanceScreen").remove();
-
-        if (isDateEarlierOrTheSame($("#startDate").val(), $("#endDate").val())) {
-            countBalanceFromPeriod($("#startDate").val(), $("#endDate").val());
-        displayAccountOperationsFromPeriod($("#startDate").val(), $("#endDate").val());
-
-        $("#choosenBalancePeriod").text($("#startDate").val() + " - " + $("#endDate").val());
+        if (isDateEarlierOrTheSame(startDate, endDate)) {
+            console.log([startDate, endDate]);
+            callback([startDate, endDate]);
         
         } else {
+            lastSearchDataRemove();
             $("#periodContainer").append("<div class='dateWrongComunicate text-danger'>Starting date is later than ending date. Type dates again...</div>");
             setTimeout(function() {
                 $(".dateWrongComunicate").remove();
             }, 3000);
-            
+           
         }  
+        
     }) 
 }
 
@@ -239,17 +235,16 @@ function countBalanceFromPeriod(balanceByCategoriesFromPeriod) {
         expensesTotal += parseFloat(expenseOperations[i].Value);
     }
 
-    $("#expensesTotal").after("<div class='balanceScreen'>" + expensesTotal + " PLN</div>");
-    $("#incomesTotal").after("<div class='balanceScreen'>" + incomesTotal + " PLN</div>");
-    $("#balanceQuote").after("<div class='balanceScreen'>" + (incomesTotal - expensesTotal) + " PLN</div>");
+    $("#expensesTotal").after("<div class='balanceScreen d-flex justify-content-center fs-3'>" + expensesTotal + " PLN</div>");
+    $("#incomesTotal").after("<div class='balanceScreen d-flex justify-content-center fs-3'>" + incomesTotal + " PLN</div>");
+    $("#balanceQuote").after("<div class='balanceScreen d-flex justify-content-center fs-2'>" + (incomesTotal - expensesTotal) + " PLN</div>");
 }
 
 function displayDataPickersInCustomPeriodBalance() {
-    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div>")
+ 
 
-    $("#periodContainer").append("<div class='mb-3 customPeriod'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div>")
+    $("#periodContainer").append("<div class='d-flex flex-column flex-lg-row gap-3'><div class='mb-3 customPeriod'><label for='startDate' class='form-label'>Start date:</label><input type='text' class='datepicker form-control' id='startDate' required></div><div class='mb-3 customPeriod'><label for='endDate' class='form-label'>End date:</label><input type='text' class='datepicker form-control' id='endDate' required></div><div class='pt-4 customPeriod'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div></div>")
 
-    $("#periodContainer").append("<div class='pt-4 customPeriod'><button class='mt-1 btn btn-success' id='customPeriodButton'>Confirm</button></div>")
 
     $(".datepicker").datepicker({  
         format: 'yyyy-mm-dd',
@@ -261,7 +256,7 @@ function displayDataPickersInCustomPeriodBalance() {
 function lastSearchDataRemove() {
     $(".balanceScreen").remove();
     $("#choosenBalancePeriod").text("");
-    $(".customPeriod").remove();
+    
 }
 
 function displayAmountsGroupedByCategoriesNames(balanceByCategoriesFromPeriod) {
@@ -270,11 +265,11 @@ function displayAmountsGroupedByCategoriesNames(balanceByCategoriesFromPeriod) {
     
     for (var i = incomeOperations.length - 1; i >= 0; i--) {
         var categoryClassName = incomeOperations[i].name.replace(/\s+/g, '_');
-        $("#incomesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>" + incomeOperations[i].name + "</div><div>" + incomeOperations[i].Value + "</div></div><div class='" + categoryClassName + "'></div></div>");
+        $("#incomesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom mb-2'><div class='fw-bold mx-2 fs-3'>" + incomeOperations[i].name + ": </div><div class='fs-3'>" + incomeOperations[i].Value + " PLN</div></div><div class='" + categoryClassName + "'></div></div>");
     } 
     for (var i = expenseOperations.length - 1; i >= 0; i--) { 
         var categoryClassName = expenseOperations[i].name.replace(/\s+/g, '_');
-        $("#expensesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom'><div>"  + expenseOperations[i].name + "</div><div>" + expenseOperations[i].Value + "</div></div><div class='" + categoryClassName + "'></div></div>");
+        $("#expensesList").after("<div class='d-flex flex-column gap-1 border-bottom balanceScreen'><div class='d-flex gap-1 border-bottom mb-2'><div class='fw-bold mx-2 fs-3'>"  + expenseOperations[i].name + ": </div><div class='fs-3'>" + expenseOperations[i].Value + " PLN</div></div><div class='" + categoryClassName + "'></div></div>");
     }
 }
 
@@ -284,11 +279,11 @@ function displayAccountOperationsFromPeriod(accountOperationsFromPeriod) {
 
     for (var i = incomeOperations.length - 1; i >= 0; i--) {
         var categoryClassName = incomeOperations[i].name.replace(/\s+/g, '_');
-        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>" + incomeOperations[i].date + "</div><div>" + incomeOperations[i].amount + "</div><div>" + incomeOperations[i].comment + "</div></div>");
+        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between mx-3 balanceScreen'><div class='col-4'>" + incomeOperations[i].date + "</div><div class='col-3'>" + incomeOperations[i].amount + " PLN</div><div class='col-5'>" + incomeOperations[i].comment + "</div></div>");
     } 
     for (var i = expenseOperations.length - 1; i >= 0; i--) { 
         var categoryClassName = expenseOperations[i].name.replace(/\s+/g, '_');
-        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between balanceScreen'><div>"  + expenseOperations[i].date + "</div><div>" + expenseOperations[i].amount + "</div><div>" + expenseOperations[i].comment + "</div></div>");
+        $("." + categoryClassName).prepend("<div class='d-flex gap-1 border-bottom justify-content-between mx-3 balanceScreen'><div class='col-4'>"  + expenseOperations[i].date + "</div><div class='col-3'>" + expenseOperations[i].amount + " PLN</div><div class='col-5'>" + expenseOperations[i].comment + "</div></div>");
     }
 }
 
@@ -310,73 +305,58 @@ function generateArrayOfColors(lengthOfArray) {
 }
 
 function drawCharts(balanceByCategoriesFromPeriod) {
+    
+    insertNewChartsElements();
     var incomeOperations = balanceByCategoriesFromPeriod[0];
     var expenseOperations = balanceByCategoriesFromPeriod[1];
 
-    new Chart("Incomes", {
-        type: "pie",
-        data: {
-          labels: incomeOperations.map(item => item.name),
-          datasets: [{
-            backgroundColor: generateArrayOfColors(incomeOperations.length),
-            data: incomeOperations.map(item => item.Value)
-          }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: "Incomes"
+        
+        new Chart("Incomes", {
+            type: "pie",
+            data: {
+              labels: incomeOperations.map(item => item.name),
+              datasets: [{
+                backgroundColor: generateArrayOfColors(incomeOperations.length),
+                data: incomeOperations.map(item => item.Value)
+              }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Incomes"
+                }
             }
-        }
-      });
+          });
 
-new Chart("Expenses", {
-    type: "pie",
-    data: {
-      labels: expenseOperations.map(item => item.name),
-      datasets: [{
-        backgroundColor: generateArrayOfColors(expenseOperations.length),
-        data: expenseOperations.map(item => item.Value)
-      }]
-    },
-    options: {
-        title: {
-            display: true,
-            text: "Expenses"
-        }
-    }
-  });
+        new Chart("Expenses", {
+            type: "pie",
+            data: {
+            labels: expenseOperations.map(item => item.name),
+            datasets: [{
+                backgroundColor: generateArrayOfColors(expenseOperations.length),
+                data: expenseOperations.map(item => item.Value)
+            }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Expenses"
+                }
+            }
+        });
 }
 
+function insertNewChartsElements() {
+    $("#charts").empty();
 
-/*
-$("#balancePeriod").change(function () {
-    lastSearchDataRemove();
-
-    var selectedOption = $(this).val();
-
-    switch (selectedOption) {
-        case "current month":
-            showBalanceCurrentMonth();
-            break;     
-        case "last month":
-            showBalanceLastMonth();
-            break;         
-        case "current year":
-            showBalanceCurrentYear();
-            break;
-        case "Custom":
-            showCustomPeriodBalance();
-            break;
-    }
-})
-
+    $("#charts").append("<div><canvas id='Expenses' style='width:100%;max-width:700px; height: 250px;'></canvas></div><div><canvas id='Incomes' style='width:100%;max-width:700px; height: 250px;'></canvas></div>");
+}
 
 $(document).ready(function() {
     $("#balancePeriod").trigger('change');
 });
 
-*/
+
 
 
 

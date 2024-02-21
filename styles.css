@@ -1,16 +1,10 @@
-body {
-    height: 100vh;
-}
+
 main {
-    height: 80vh;
+    min-height: 90vh;
     background-image: url("./images/background-image-clock-coins-in-jar.webp");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-nav {
-    min-height: 12.5vh;
 }
 
 .navbar-toggler {
@@ -29,14 +23,18 @@ nav {
 .menuOptions:hover {
     background-color: rgba(71, 121, 30, 0.75); 
     color: white; 
-    border-radius: 15px; 
-
-
+    border-radius: 10px; 
 }
 
-footer {
-    height: 8.5vh;
+.balanceSection {
+    background-color: rgba(226, 209, 195, 0.795); 
+    min-width: 90%;
 }
+
+.formsBackground { 
+    background-color: rgba(255, 255, 255, 0.90); 
+}
+
 @media (max-width: 768px) {
     #navMainPageButtons .btn, #navMainMenu div{
         display: none;

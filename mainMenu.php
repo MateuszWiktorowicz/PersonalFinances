@@ -16,7 +16,7 @@
     <title>PersonalFinances</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="./styles.css" rel="stylesheet" />
+    <link href="./styles.css" rel="stylesheet">
 
 </head>
 
@@ -30,50 +30,55 @@
             </a>
             
             <div class="d-flex gap-3 p-3" id="navMainMenu">
-                <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
-                <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
-                <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
-                <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
-                <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
+                <div><a class="text-reset text-decoration-none menuOptions" href="./addIncome.php">Add Income</a></div>
+                <div><a class="text-reset text-decoration-none menuOptions" href="./addExpense.php">Add Expense</a></div>
+                <div><a class="text-reset text-decoration-none menuOptions" href="./balance.php">Balance</a></div>
+                <div><a class="text-reset text-decoration-none menuOptions" href="./settings.php">Settings</a></div>
+                <div><a class="text-reset text-decoration-none menuOptions" href="./logout.php">Logout</a></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span></button>
             </div>
             <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
                 <div class="navbar-nav">
-                    <div><a class="text-reset text-decoration-none" href="./addIncome.php">Add Income</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./addExpense.php">Add Expense</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./balance.php">Balance</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./settings.php">Settings</a></div>
-                    <div><a class="text-reset text-decoration-none" href="./logout.php">Logout</a></div>
+                    <div><a class="text-reset text-decoration-none menuOptions" href="./addIncome.php">Add Income</a></div>
+                    <div><a class="text-reset text-decoration-none menuOptions" href="./addExpense.php">Add Expense</a></div>
+                    <div><a class="text-reset text-decoration-none menuOptions" href="./balance.php">Balance</a></div>
+                    <div><a class="text-reset text-decoration-none menuOptions" href="./settings.php">Settings</a></div>
+                    <div><a class="text-reset text-decoration-none menuOptions" href="./logout.php">Logout</a></div>
                 </div>
             </div>
         </div>
     </nav>
     <main>
-        <div class="d-flex flex-column mt-5">
-            <div class="text-center fs-5 bg-white opacity-75">
+        <div class="d-flex justify-content-center formsBackground rounded mx-5 p-5 mt-5">
+            <div class="text-center fs-5">
                <h1> Welcome to Your Financial Management App, <span class="text-success" id="welcomeNameBox"></span></h1>
             <p>
                 We're here to help you take control of your finances. Below are some key options to get you started:
             </p>
-            <p>
+            
                 <h2>Add Income:</h2>
+                <p>
                 Record your sources of income to keep track of your earnings.
             </p>
-            <p>
+            
                 <h2>Add Expense:</h2>
+                <p>
                 Log your expenses to maintain a detailed record of your spending habits.
             </p>
-            <p>
+            
                 <h3>View Balance:</h3>
+                <p>
                 Check your overall financial balance to stay informed about your financial health.
             </p>
-            <p>
+           
                 <h2>Change Settings:</h2>
+                <p>
                 Adjust your account settings according to your preferences.
             </p>
-            <p>
+           
                 <h2>Logout:</h2>
+                <p>
                 Logout of your account to ensure the security of your information.
             </p>
             </div>
